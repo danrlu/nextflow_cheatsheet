@@ -46,4 +46,4 @@
 - In config, use `singularity.autoMounts = true` OR `singularity.runOptions = '-B /projects/b1042'` to mount the local file paths into the container.
 - Then:
   - run Nextflow in the folder where the main.nf is (so ${workflow.projectDir} points to the right place) 
-  - use absolute file paths, and when doesn't work, pass the paths through a parameter and append it in front of the files. 
+  - specify absolute file paths in a parameter and append it whenever needed. 
