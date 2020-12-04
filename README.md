@@ -1,5 +1,5 @@
 # Useful tips to get started with Nextflow
-(Please report errors in Issues. Thank you!)
+**(Please report errors in Issues. Thank you!)**
 
 ### The working directory
 - Each parallel execution of a process happens in its own temporary working directory. 
