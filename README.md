@@ -7,13 +7,13 @@
 - This folder only contains files (usually in form of symlinks, see below) from the input channel, so it's isolated from the rest of the file system. 
 - This folder will also contain all output files (unless specifically directed elsewhere), and only those specified in the output channels and `publishDir` will be moved or copied to the `publishDir`.
 - This is imporatnt to keep in mind when the `"""` script section `"""` involves changing folders, such as:
-    - `cd` will go outside of the working directory and can no longer find files from the input channels. The output files will get written to the folder that was `cd` into, so Nextflow will not be able to find output files in working directory to put in `publishDir`. 
+    - `cd` will go outside of the working directory and can no longer find files from the input channels. The output files will get written to the folder that was `cd` into, and Nextflow will not be able to find the output files in working directory to put in `publishDir`. 
     - with `rmarkdown::render( knit_root_dir = "folder/" )`, rmarkdown will knit, look for input files and write out files in respect to the `knit_root_dir` (which defaults to location of the .rmd file), but the markdown report itself (.pdf or .html) will be generated where the .rmd is. Among them, only files in Nextflow working directory can go to output channel. 
 - Run `nextflow clean -f` in the excecution folder to clean up the working directories.
 
 ### Where am I?
 - Throughout Nextflow scripts, one can use 
-  - `${workflow.projectDir}` to refer to where the nextflow script (usually main.nf) locates. For example `Rscript ${workflow.projectDir}/bin/task.R`. This works well even inside of Docker containers.
+  - `${workflow.projectDir}` to refer to where the nextflow script (usually main.nf) locates. For example `Rscript ${workflow.projectDir}/bin/task.R`. 
   - `${workflow.launchDir}` to refer to where the script is called from. 
 
 ### path("A.txt")
@@ -41,4 +41,8 @@
 - Extremely useful for troubleshooting and optimize resources.
 - `dag.enabled = true` will draw a flowchart for the pipeline. Needs graphviz installed.
 
-
+### File paths in Docker container
+- It's sometimes tricky to get Nextflow to find the files in a Docker container and I don't fully understand it. 
+- Generally what works best, is to 
+  - run Nextflow in the folder where the main.nf is (so ${workflow.projectDir} points to the right place) 
+  - pass any absolute file path through a parameter and append it in front of the files. 
