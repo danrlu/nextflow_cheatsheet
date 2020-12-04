@@ -20,7 +20,7 @@
 - `Channel.from( "A.txt" )` will put `A.txt` as is into the channel 
 - `Channel.fromPath( "A.txt" )` will add a path (usually current directory) and put `/path/A.txt` into the channel. 
 - `Channel.fromPath( "/path/A.txt" )` will put `/path/A.txt` into the channel. In other words, `Channel.fromPath` will always include a path to the file.
-- This goes hand in hand with `input: path("A.txt")` inside the process declaration, where **Nextflow actually creates a symlink named `A.txt`** (note the path is stripped) **linking to `/path/A.txt` in the working directory**, so it can be accessed within the working directory by the script `cat A.txt` without specifying a path.
+- This goes hand in hand with `input: path("A.txt")` inside the process declaration, where **Nextflow actually creates a symlink named `A.txt`** (note the path from first / to last / is stripped) **linking to `/path/A.txt` in the working directory**, so it can be accessed within the working directory by the script `cat A.txt` without specifying a path.
 - `path(A)` is the same as `file(A)`. `tuple` is the same as `set`. It's recommended to use `path` and `tuple` with newer versions.
 
 ### path("A.txt") vs. path(A)
