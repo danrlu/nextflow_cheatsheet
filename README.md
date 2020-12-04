@@ -7,19 +7,19 @@
 - This folder only contains files (usually in form of symlinks, see below) from the input channel, so it's isolated from the rest of the file system. 
 - This folder will also contain all output files (unless specifically directed elsewhere), and only those specified in the output channels and `publishDir` will be moved or copied to the `publishDir`.
 - This is imporatnt to keep in mind when the `"""` script section `"""` involves changing folders, such as:
-  - `cd` will go outside of the working directory and can no longer find files from the input channels. The output files will get written to the folder that was `cd` into, so Nextflow will not be able to find output files in working directory to put in `publishDir`. 
-  - with `rmarkdown::render( knit_root_dir = "folder/" )`, rmarkdown will knit, look for input files and write out files in respect to the `knit_root_dir` (which defaults to location of the .rmd file), but the markdown report itself (.pdf or .html) will be generated where the .rmd is. Among them, only files in Nextflow working directory can go to output channel. 
+    - `cd` will go outside of the working directory and can no longer find files from the input channels. The output files will get written to the folder that was `cd` into, so Nextflow will not be able to find output files in working directory to put in `publishDir`. 
+    - with `rmarkdown::render( knit_root_dir = "folder/" )`, rmarkdown will knit, look for input files and write out files in respect to the `knit_root_dir` (which defaults to location of the .rmd file), but the markdown report itself (.pdf or .html) will be generated where the .rmd is. Among them, only files in Nextflow working directory can go to output channel. 
 - Run `nextflow clean -f` in the excecution folder to clean up the working directories.
 
-### The relative path to Nextflow
+### Where am I?
 - Throughout Nextflow scripts, one can use 
-  - `${workflow.projectDir}` to refer to where the nextflow script (usually main.nf) locates. For example `Rscript ${workflow.projectDir}/bin/task.R`will point to the R script in the bin folder where the nextflow script is.
+  - `${workflow.projectDir}` to refer to where the nextflow script (usually main.nf) locates. For example `Rscript ${workflow.projectDir}/bin/task.R`. This works well even inside of Docker containers.
   - `${workflow.launchDir}` to refer to where the script is called from. 
 
 ### path("A.txt")
 - `Channel.from( "A.txt" )` will put `A.txt` as is into the channel 
 - `Channel.fromPath( "A.txt" )` will add a path (usually current directory) and put `/path/A.txt` into the channel. 
-- `Channel.fromPath( "/path/A.txt" )` will put `/path/A.txt` into the channel. In other words, `Channel.fromPath` will always include a path to the file.
+- `Channel.fromPath( "/path/A.txt" )` will put `/path/A.txt` into the channel. In other words, `Channel.fromPath` will make sure there is a path.
 - This goes hand in hand with `input: path("A.txt")` inside the process declaration, where **Nextflow actually creates a symlink named `A.txt`** (note the path from first / to last / is stripped) **linking to `/path/A.txt` in the working directory**, so it can be accessed within the working directory by the script `cat A.txt` without specifying a path.
 - `path(A)` is the same as `file(A)`. `tuple` is the same as `set`. It's recommended to use `path` and `tuple` with newer versions.
 
