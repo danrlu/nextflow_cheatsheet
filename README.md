@@ -6,8 +6,8 @@
 - It is the folder named like `/path_to_tmp/4d9c3b333734a5b63d66f0bc0cfcdc` that Nextflow points you to when there is error. One can find the folder path in the .nextflow.log or in the report.html. This folder contains the error log that could be useful for debugging.
 - This folder only contains files (usually in form of symlinks, see below) from the input channel, so it's isolated from the rest of the file system. 
 - This folder will also contain all output files (unless specifically directed elsewhere), and only those specified in the output channels and `publishDir` will be moved or copied to the `publishDir`.
-- This is imporatnt to keep in mind when the script section involves changing folders, such as:
-  - if there is `cd` in the `"""` script section `"""`, it will go outside of the working directory and can no longer use files from the input channels. The output files will get written to the folder that was `cd` into, so Nextflow will not be able to find output files in working directory to put in `publishDir`. 
+- This is imporatnt to keep in mind when the `"""` script section `"""` involves changing folders, such as:
+  - `cd` will go outside of the working directory and can no longer find files from the input channels. The output files will get written to the folder that was `cd` into, so Nextflow will not be able to find output files in working directory to put in `publishDir`. 
   - with `rmarkdown::render( knit_root_dir = "folder/" )`, rmarkdown will knit, look for input files and write out files in respect to the `knit_root_dir` (which defaults to location of the .rmd file), but the markdown report itself (.pdf or .html) will be generated where the .rmd is. Among them, only files in Nextflow working directory can go to output channel. 
 - Run `nextflow clean -f` in the excecution folder to clean up the working directories.
 
