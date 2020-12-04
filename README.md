@@ -27,6 +27,8 @@
 - DSL2 also enforce that each process takes only 1 input channel, so all inputs needs to be combined into 1 channel. See **Nextflow_cheatsheet_channel**.
 
 ### Nextflow reports
-- Having `report.enabled = true` and `timeline.enabled = true` in the config will let Nextflow write out report for the run. They will contain resource usage, status for each execution, path to working directory and time spent queueing and running for each step. Extremely useful for troubleshooting and optimize resources.
+- Having `report.enabled = true` and `timeline.enabled = true` in the config will let Nextflow write out report for the run. 
+- They contain resource usage, status for each execution, path to working directory and time spent queueing and running for each step. 
+- Extremely useful for troubleshooting and optimize resources.
 
 
