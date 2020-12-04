@@ -6,7 +6,7 @@
 - This folder only contains files (usually symlinks, see next point) from the input channel, so it's maximumly isolated from the rest of ones files. 
 - This folder will also contains all output files (unless directed to elsewhere), and only those specified in the output channels and `publishDir` will be moved or copied to the `publishDir`.
 - Knowing this, if there is `cd` in the script section, it will leave the working directory. The output files will get written to the folder that was `cd` into, but Nextflow will not be able to find output files in working directory to put in `publishDir`. 
-- `nextflow clean -f` to clean up these folders.
+- Run `nextflow clean -f` in the excecution folder to clean up the working directories.
 
 ### What really happens with path("A.txt")
 - `path(A)` is the same as `file(A)`. `tuple` is the same as `set`. It's recommended to use `path` and `tuple` with newer versions.
