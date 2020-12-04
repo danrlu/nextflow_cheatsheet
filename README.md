@@ -1,11 +1,12 @@
 # Useful tips to get started with Nextflow
-... that are hidden from the official documentation
 
 ### The working directory
-- Each parallel execution of a process happens in its own working directory. It is the folder named like `/path_to_tmp/4d9c3b333734a5b63d66f0bc0cfcdc` Nextflow points you to when there is error. One can find the folder path in the .nextflow.log or in the report.html.
-- This folder contains symlinks for the input files (see next point). 
-- This folder will also contains all output files, and only those specified in the output channels and `publishDir` will be moved or copied to the `publishDir`.
-- Knowing this, if there is `cd` in the script section, it will leave the working directory. The output files may get written to the folder that was `cd` into, but Nextflow will still search for output files in working directory to put in `publishDir` and will not be able to find them. 
+- Each parallel execution of a process happens in its own temporary working directory. 
+- It is the folder named like `/path_to_tmp/4d9c3b333734a5b63d66f0bc0cfcdc` Nextflow points you to when there is error. One can find the folder path in the .nextflow.log or in the report.html. It contains the error log that could be useful for debugging.
+- This folder only contains files (usually symlinks, see next point) from the input channel, so it's maximumly isolated from the rest of ones files. 
+- This folder will also contains all output files (unless directed to elsewhere), and only those specified in the output channels and `publishDir` will be moved or copied to the `publishDir`.
+- Knowing this, if there is `cd` in the script section, it will leave the working directory. The output files will get written to the folder that was `cd` into, but Nextflow will not be able to find output files in working directory to put in `publishDir`. 
+- `nextflow clean -f` to clean up these folders.
 
 ### What really happens with path("A.txt")
 - `path(A)` is the same as `file(A)`. `tuple` is the same as `set`. It's recommended to use `path` and `tuple` with newer versions.
@@ -27,3 +28,5 @@
 
 ### Nextflow reports
 - Having `report.enabled = true` and `timeline.enabled = true` in the config will let Nextflow write out report for the run. They will contain resource usage, status for each execution, path to working directory and time spent queueing and running for each step. Extremely useful for troubleshooting and optimize resources.
+
+
