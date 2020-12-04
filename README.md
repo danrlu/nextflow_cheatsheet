@@ -30,5 +30,6 @@
 - Having `report.enabled = true` and `timeline.enabled = true` in the config will let Nextflow write out report for the run. 
 - They contain resource usage, status for each execution, path to working directory and time spent queueing and running for each step. 
 - Extremely useful for troubleshooting and optimize resources.
+- `dag.enabled = true` will draw a flowchart for the pipeline. Needs graphviz installed.
 
 
