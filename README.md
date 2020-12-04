@@ -1,25 +1,34 @@
 # Useful tips to get started with Nextflow
+(Please report errors in Issues. Thank you!)
 
 ### The working directory
 - Each parallel execution of a process happens in its own temporary working directory. 
-- It is the folder named like `/path_to_tmp/4d9c3b333734a5b63d66f0bc0cfcdc` Nextflow points you to when there is error. One can find the folder path in the .nextflow.log or in the report.html. It contains the error log that could be useful for debugging.
-- This folder only contains files (usually symlinks, see next point) from the input channel, so it's maximumly isolated from the rest of ones files. 
-- This folder will also contains all output files (unless directed to elsewhere), and only those specified in the output channels and `publishDir` will be moved or copied to the `publishDir`.
-- Knowing this, if there is `cd` in the script section, it will leave the working directory. The output files will get written to the folder that was `cd` into, but Nextflow will not be able to find output files in working directory to put in `publishDir`. 
+- It is the folder named like `/path_to_tmp/4d9c3b333734a5b63d66f0bc0cfcdc` that Nextflow points you to when there is error. One can find the path in the .nextflow.log or in the report.html. This folder contains the error log that could be useful for debugging.
+- This folder only contains files (usually in form of symlinks, see below) from the input channel, so it's maximumly isolated from the rest of the file system. 
+- This folder will also contain all output files (unless directed to elsewhere), and only those specified in the output channels and `publishDir` will be moved or copied to the `publishDir`.
+- This is imporatnt to keep in mind when the script section involves changing folders, such as:
+  - if there is `cd` in the `"""` script section `"""`, it will go outside of the working directory and can no longer use files from the input channels. The output files will get written to the folder that was `cd` into, so Nextflow will not be able to find output files in working directory to put in `publishDir`. 
+  - with `Rmarkdown::knit( knit_root_dir = "folder/" )`, rmarkdown will knit, look for input files and write out files in respect to the `knit_root_dir` (which defaults to location of the .rmd file), but the markdown report itself (.pdf or .html) will be generated where the .rmd is. Among them, only files in Nextflow working directory can go to output channel. 
 - Run `nextflow clean -f` in the excecution folder to clean up the working directories.
+
+### The relative path to Nextflow
+- Throughout Nextflow scripts, one can use 
+  - `${workflow.projectDir}` to refer to where the script (usually main.nf) locates. For example `Rscript ${workflow.projectDir}/bin/task.R`
+  - `${workflow.launchDir}` to refer to where the script is ran from.
 
 ### What really happens with path("A.txt")
 - `path(A)` is the same as `file(A)`. `tuple` is the same as `set`. It's recommended to use `path` and `tuple` with newer versions.
 - `Channel.from( "path/A.txt" )` will put `path/A.txt` as is into the channel, whereas `Channel.fromPath( "path/A.txt" )` will create a symlink named `A.txt` linking to `path/A.txt` into the working directory. 
 - This is the same as `val("A.txt")` and `file("A.txt")`. When one declares `input: file("A.txt")`, Nextflow actually creates a symlink named `A.txt` linking to `path/A.txt` in the working directory, so it can be accessed within the working directory by the script `cat A.txt` without specifying a path.
+- Note if one does `Channel.fromPath( "A.txt" )` without specifying a path, Nextflow will assume it is in the project folder.
 
 ### path("A.txt") vs. path(A)
 - With `input: path("A.txt")` one can refer to it in the script as `A.txt`
 - With `input: path(A)` one can refer to A in the script as `$A`
-- `path( )` and `path " "` are generally exchangale. Exception is (tip from [@danielecook](https://github.com/danielecook)): 
+- `path( )` and `path " "` are generally exchangale. Exception is (tip from [@danielecook](https://github.com/danielecook), tested in Nextflow 20.01.0): 
   - if not in a tuple, use `input: path “input.tsv”` 
   - if in a tuple, use `input: tuple path(“input1.tsv”), path(“input2.tsv”)`
-  - this is one of the mysterious errors hopefully will get fixed soon.
+  - this is one of the mysterious errors that may get fixed soon.
 
 ### DLS2 vs DLS1
 - In DSL1, each channel can only be used once. 
