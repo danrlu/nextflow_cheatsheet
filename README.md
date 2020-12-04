@@ -20,13 +20,13 @@
 - `Channel.from( "A.txt" )` will put `A.txt` as is into the channel 
 - `Channel.fromPath( "A.txt" )` will add a path (usually current directory) and put `/path/A.txt` into the channel. 
 - `Channel.fromPath( "/path/A.txt" )` will put `/path/A.txt` into the channel. In other words, `Channel.fromPath` will always include a path to the file.
-- This goes hand in hand with `input: file("A.txt")` in the process, where **Nextflow actually creates a symlink named `A.txt` linking to `/path/A.txt` in the working directory**, so it can be accessed within the working directory by the script `cat A.txt` without specifying a path.
+- This goes hand in hand with `input: path("A.txt")` inside the process declaration, where **Nextflow actually creates a symlink named `A.txt`** (note the path is stripped) **linking to `/path/A.txt` in the working directory**, so it can be accessed within the working directory by the script `cat A.txt` without specifying a path.
 - `path(A)` is the same as `file(A)`. `tuple` is the same as `set`. It's recommended to use `path` and `tuple` with newer versions.
 
 ### path("A.txt") vs. path(A)
 - With `input: path("A.txt")` one can refer to the file in the script as `A.txt`. Side note `A.txt` doesn't have to be the same name as in channel creation, it can be anything, `B.txt`, `name` etc. 
 - With `input: path(A)` one can refer to A in the script as `$A`
-- `path( )` and `path " "` are generally exchangale. Exception is (tip from [@danielecook](https://github.com/danielecook), tested in Nextflow 20.01.0): 
+- `path( )` and `path " "` generally both work. Exception is (tip from [@danielecook](https://github.com/danielecook), tested in Nextflow 20.01.0): 
   - if not in a tuple, use `input: path “input.tsv”` 
   - if in a tuple, use `input: tuple path(“input1.tsv”), path(“input2.tsv”)`
 
