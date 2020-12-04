@@ -41,8 +41,9 @@
 - Extremely useful for troubleshooting and optimize resources.
 - `dag.enabled = true` will draw a flowchart for the pipeline. Needs graphviz installed.
 
-### File paths in Docker container
-- It's sometimes tricky to get Nextflow to find the files in a Docker container and I don't fully understand it. 
-- Generally what works best, is to 
+### File paths in Singularity with Docker container
+- It's sometimes tricky to get Nextflow to find the files in a Docker container and below info is from trial and error.
+- In config, use `singularity.autoMounts = true` OR `singularity.runOptions = '-B /projects/b1042'` to mount the local file paths into the container.
+- Then:
   - run Nextflow in the folder where the main.nf is (so ${workflow.projectDir} points to the right place) 
-  - pass any absolute file path through a parameter and append it in front of the files. 
+  - use absolute file paths, and when doesn't work, pass the paths through a parameter and append it in front of the files. 
