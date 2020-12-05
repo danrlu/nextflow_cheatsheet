@@ -22,11 +22,11 @@
 - `path(A)` is the same as `file(A)`. `tuple` is the same as `set`. It's recommended to use `path` and `tuple` with newer versions.
 
 ### path("A.txt") vs. path(A)
-- With `input: path("A.txt")` one can refer to the file in the script as `A.txt`. Side note `A.txt` doesn't have to be the same name as in channel creation, it can be anything, `B.txt`, `name` etc. 
+- With `input: path("A.txt")` one can refer to the file in the script as `A.txt`. Side note `A.txt` doesn't have to be the same name as in channel creation, it can be anything, `input: path("B.txt")`, `input: path("n")` etc. 
 - With `input: path(A)` one can refer to A in the script as `$A`
-- `path( )` and `path " "` generally both work. Exception is (tip from [@danielecook](https://github.com/danielecook), tested in Nextflow 20.01.0): 
-  - if not in a tuple, use `input: path “input.tsv”` 
-  - if in a tuple, use `input: tuple path(“input1.tsv”), path(“input2.tsv”)`
+- `path("A.txt")` and `path "A.txt"` generally both work. Occasionally had error that required the following (tip from [@danielecook](https://github.com/danielecook)): 
+  - if not in a tuple, use `input: path “A.txt”` 
+  - if in a tuple, use `input: tuple path(“A.txt”), path(“B.txt”)`
 
 ### DLS2 vs DLS1
 - In DSL1, each channel can only be used once. 
@@ -44,4 +44,4 @@
 - In config, use `singularity.autoMounts = true` OR `singularity.runOptions = '-B /projects/b1042'` to mount the local file paths into the container.
 - Then:
   - run Nextflow in the folder where the main.nf is (so ${workflow.projectDir} points to the right place) 
-  - specify absolute file paths in a parameter and append it whenever needed. 
+  - specify absolute file paths in a parameter and append it into the file channels. 
