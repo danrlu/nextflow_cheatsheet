@@ -20,7 +20,7 @@
   - `${workflow.projectDir}` to refer to where the nextflow script (usually main.nf) locates. For example: `publishDir "${workflow.projectDir}/output", mode: 'copy'` or `Rscript ${workflow.projectDir}/bin/task.R`.
   - `${workflow.launchDir}` to refer to where the script is called from. 
 
-### path("A.txt")
+### `Channel.fromPath("A.txt")` in channel creation
 - `Channel.from( "A.txt" )` will put `A.txt` as is into the channel 
 - `Channel.fromPath( "A.txt" )` will add a full path (usually current directory) and put `/path/A.txt` into the channel. 
 - `Channel.fromPath( "folder/A.txt" )` will add a full path (usually current directory) and put `/path/folder/A.txt` into the channel. 
@@ -28,7 +28,7 @@
 - In other words, `Channel.fromPath` will only add a full path if there isn't already one and ensure there is always a full path in the resulting channel.
 - This goes hand in hand with `input: path("A.txt")` inside the process, where **Nextflow actually creates a symlink named `A.txt`** (note the path from first / to last / is stripped) **linking to `/path/A.txt` in the working directory**, so it can be accessed within the working directory by the script `cat A.txt` without specifying a path.
 
-### `input: path("A.txt")` vs. `input: path(A)` in the process section 
+### `input: path("A.txt")` in the process section 
 - With `input: path("A.txt")` one can refer to the file in the script as `A.txt`. Side note `A.txt` doesn't have to be the same name as in channel creation, it can be anything, `input: path("B.txt")`, `input: path("n")` etc. 
 - With `input: path(A)` one can refer to the file in the script as `$A`
 - `input: path("A.txt")` and `input: path "A.txt"` generally both work. Occasionally had errors that required the following (tip from [@danielecook](https://github.com/danielecook)): 
@@ -47,10 +47,5 @@
 - Extremely useful for troubleshooting and optimize resources.
 - `dag.enabled = true` will draw a flowchart for the pipeline. Needs graphviz installed.
 
-### File paths in Singularity with Docker container
-- It's sometimes tricky to get Nextflow to find the files in a Docker container and below info is from trial and error.
-- In config, use `singularity.autoMounts = true` OR `singularity.runOptions = '-B /projects/b1042'` to mount the local file paths into the container.
-- Then:
-  - run Nextflow in the folder where the main.nf is (so ${workflow.projectDir} points to the right place) 
-  - specify absolute file paths in a parameter and append it into the file channels. 
+
 
