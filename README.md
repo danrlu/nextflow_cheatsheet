@@ -1,5 +1,5 @@
 # Useful tips to get started with Nextflow
-**(Please report errors and suggestions in Issues. Thank you!)**
+**(Error reports and suggestions welcome!)**
 
 ### Places to search for answers:
 - [Nextflow patterns, official](https://nextflow-io.github.io/patterns/index.html)
