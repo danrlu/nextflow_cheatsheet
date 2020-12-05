@@ -1,13 +1,11 @@
 # Useful tips to get started with Nextflow
 **(Please report errors and suggestions in Issues. Thank you!)**
 
-Nextflow is a wonderful workflow manager that the more I use, the more I love. Below are a few speed bumps that I had to go over, and I put my most used commands into a cheatsheet and hopefully they will be helpful for others.
-
 ### Places to search for answers:
-- [Nextflow patterns by the author](https://nextflow-io.github.io/patterns/index.html)
+- [Nextflow patterns, official](https://nextflow-io.github.io/patterns/index.html)
 - [Gitter chat room](https://gitter.im/nextflow-io/nextflow)
 - [Google group](https://groups.google.com/forum/#!forum/nextflow)
-- The old posts are a treasure dump. 99% I find my answers in there.
+- The old posts in these places are a treasure dump. I find 99% of my answers in there. In fact the last function `.collect{ it[1] }` in the cheatsheet came from a post in Gitter by (@Juke34)[https://github.com/Juke34]
 
 ### The working directory
 - **Each execution of a process happens in its own temporary working directory.** 
