@@ -5,14 +5,14 @@
 - [Nextflow patterns, official](https://nextflow-io.github.io/patterns/index.html)
 - [Gitter chat room](https://gitter.im/nextflow-io/nextflow)
 - [Google group](https://groups.google.com/forum/#!forum/nextflow)
-- The old posts in these places are a treasure dump that answered 99% of my questions. As an example, the last function `.collect{ it[1] }` in the cheatsheet came from a post in Gitter by (@Juke34)[https://github.com/Juke34]
+- The old posts in these places are a treasure dump that answered 99% of my questions. As an example, the last function `.collect{ it[1] }` in the [cheatsheet](https://github.com/danrlu/Nextflow_cheatsheet/blob/main/nextflow_cheatsheet.pdf) came from a post in Gitter by [@Juke34](https://github.com/Juke34)
 
 ### The working directory
 - **Each execution of a process happens in its own temporary working directory.** 
 - The working directory is the folder named like `/path_to_tmp/4d9c3b333734a5b63d66f0bc0cfcdc` that Nextflow points you to when there is an error in execution. This folder contains the error log that could be useful for debugging. One can find the folder path in the .nextflow.log or in the report.html. 
 - This folder only contains files (usually in form of symlinks, see below) from the input channel, so it's isolated from the rest of the file system. 
 - This folder will also contain all output files (unless specifically directed elsewhere), and only those specified in the output channels and `publishDir` will be moved or copied to the `publishDir`.
-- Be mindful that if the `"""` script section `"""` involves changing folders, such as `cd` or `rmarkdown::render( knit_root_dir = "folder/" )`, Nextflow will still only search the working directory for output files. 
+- Be mindful that if the `"""` script section `"""` involves changing directory, such as `cd` or `rmarkdown::render( knit_root_dir = "folder/" )`, Nextflow will still only search the working directory for output files. 
 - Run `nextflow clean -f` in the excecution folder to clean up the working directories.
 
 ### Where am I?
