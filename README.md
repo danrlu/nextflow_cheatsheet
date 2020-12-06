@@ -5,7 +5,7 @@
 - [Nextflow patterns, official](https://nextflow-io.github.io/patterns/index.html)
 - [Gitter chat room](https://gitter.im/nextflow-io/nextflow)
 - [Google group](https://groups.google.com/forum/#!forum/nextflow)
-- The old posts in these places are a treasure dump. I find 99% of my answers in there. In fact the last function `.collect{ it[1] }` in the cheatsheet came from a post in Gitter by (@Juke34)[https://github.com/Juke34]
+- The old posts in these places are a treasure dump that answered 99% of my questions. As an example, the last function `.collect{ it[1] }` in the cheatsheet came from a post in Gitter by (@Juke34)[https://github.com/Juke34]
 
 ### The working directory
 - **Each execution of a process happens in its own temporary working directory.** 
