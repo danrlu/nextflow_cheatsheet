@@ -1,7 +1,7 @@
 # Tips to get started with Nextflow scripting
-**(Error reports and suggestions welcome!)**
 
-Nextflow can do SO much. Here only covers the very basics of the scripting, but not configuration which would be more user-specific.
+Nextflow can do SO much. Here only covers the very basics of the scripting and good-to-knows, but not configuration which would be more user-specific.
+**Error reports and suggestions welcome!**
 
 ### Places to search for answers:
 - [Nextflow patterns, official](https://nextflow-io.github.io/patterns/index.html)
