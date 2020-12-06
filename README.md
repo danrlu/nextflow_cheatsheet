@@ -48,5 +48,5 @@
 - `dag.enabled = true` will draw a flowchart for the pipeline. Needs graphviz installed.
 
 ### Acknowledgement
-- [@danielecook](https://github.com/danielecook) for getting me started with Nextflow.
+- [@danielecook](https://github.com/danielecook) for getting me started with Nextflow and offering lots of help.
 
