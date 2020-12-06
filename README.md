@@ -39,7 +39,7 @@
 ### DLS2 vs DLS1
 - In DSL1, each queue channel can only be used once. 
 - In DSL2, a channel can be fed into multiple processes, but each process can only be called once. The solution is either `.concat()` the input channels so they run as parallel processes, or put the process in a module and import multiple times from the module.
-- DSL2 also enforce that each process takes only 1 input channel, so all inputs needs to be combined into 1 channel. See **Nextflow_cheatsheet_channel**.
+- DSL2 also enforce that each process takes only 1 input channel, so all inputs needs to be combined into 1 channel. See the [cheatsheet](https://github.com/danrlu/Nextflow_cheatsheet/blob/main/nextflow_cheatsheet.pdf).
 
 ### Nextflow reports
 - Having `report.enabled = true` and `timeline.enabled = true` in the config will let Nextflow write out report for the run. 
