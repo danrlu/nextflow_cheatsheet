@@ -40,11 +40,13 @@ Nextflow can do SO much. Here only covers the very basics of the scripting, but 
   - if in a tuple, use `input: tuple path(“A.txt”), path(“B.txt”)`
 - `path(A)` is the same as `file(A)`. `tuple` is the same as `set`. It's recommended to use `path` and `tuple` with newer versions.
 
-### DLS2 vs DLS1
-- Moving to DLS2 is a one-way street. It's so intuitive with clean and readable code.
+### DSL2
+- Moving to DSL2 is a one-way street. It's so intuitive with clean and readable code.
 - In DSL1, each queue channel can only be used once. 
-- In DSL2, a channel can be fed into multiple processes, but each process can only be called once. The solution is either `.concat()` the input channels so they run as parallel processes, or put the process in a module and import multiple times from the module.
+- In DSL2, a channel can be fed into multiple processes
+- In DSL2, each process can only be called once. The solution is either `.concat()` the input channels so they run as parallel processes, or put the process in a module and import multiple times from the module.
 - DSL2 also enforces that all inputs needs to be combined into 1 channel before it goes into a process. See the [cheatsheet](https://github.com/danrlu/Nextflow_cheatsheet/blob/main/nextflow_cheatsheet.pdf) for useful operators. 
+- [Simple steps to convert from original syntax to DSL2](https://github.com/danrlu/Nextflow_cheatsheet/blob/main/nextflow_convert_DSL2.pdf)
 
 ### Acknowledgement
 - [@danielecook](https://github.com/danielecook) for offering lots of help and advice.
