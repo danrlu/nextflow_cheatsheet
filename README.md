@@ -47,5 +47,5 @@ Nextflow can do SO much. Here only covers the very basics of the scripting and g
 - DSL2 also enforces that all inputs needs to be combined into 1 channel before it goes into a process. See the [cheatsheet](https://github.com/danrlu/Nextflow_cheatsheet/blob/main/nextflow_cheatsheet.pdf) for useful operators. 
 
 ### Acknowledgement
-- [@danielecook](https://github.com/danielecook) for getting me started with Nextflow and offering lots of help.
+- [@danielecook](https://github.com/danielecook) for offering lots of help and advice.
 
