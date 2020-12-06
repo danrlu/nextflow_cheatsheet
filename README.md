@@ -1,5 +1,7 @@
-# Tips to get started with Nextflow
+# Tips to get started with Nextflow scripting
 **(Error reports and suggestions welcome!)**
+
+Nextflow can do SO much. Here only covers the very basics of the scripting, and not the details of configuration.
 
 ### Places to search for answers:
 - [Nextflow patterns, official](https://nextflow-io.github.io/patterns/index.html)
@@ -19,6 +21,7 @@
 - Throughout Nextflow scripts, one can use 
   - `${workflow.projectDir}` to refer to where the nextflow script (usually main.nf) locates. For example: `publishDir "${workflow.projectDir}/output", mode: 'copy'` or `Rscript ${workflow.projectDir}/bin/task.R`.
   - `${workflow.launchDir}` to refer to where the script is called from. 
+- They are more reiable than `$PWD` or `$pwd` in the script section.
 
 ### `Channel.fromPath("A.txt")` in channel creation
 - `Channel.from( "A.txt" )` will put `A.txt` as is into the channel 
@@ -40,12 +43,6 @@
 - In DSL1, each queue channel can only be used once. 
 - In DSL2, a channel can be fed into multiple processes, but each process can only be called once. The solution is either `.concat()` the input channels so they run as parallel processes, or put the process in a module and import multiple times from the module.
 - DSL2 also enforce that each process takes only 1 input channel, so all inputs needs to be combined into 1 channel. See the [cheatsheet](https://github.com/danrlu/Nextflow_cheatsheet/blob/main/nextflow_cheatsheet.pdf).
-
-### Nextflow reports
-- Having `report.enabled = true` and `timeline.enabled = true` in the config will let Nextflow write out report for the run. 
-- They contain resource usage, status for each execution, path to working directory and time spent queueing and running for each step. 
-- Extremely useful for troubleshooting and optimize resources.
-- `dag.enabled = true` will draw a flowchart for the pipeline. Needs graphviz installed.
 
 ### Acknowledgement
 - [@danielecook](https://github.com/danielecook) for getting me started with Nextflow and offering lots of help.
