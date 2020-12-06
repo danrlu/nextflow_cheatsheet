@@ -1,4 +1,4 @@
-# Useful tips to get started with Nextflow
+# Tips to get started with Nextflow
 **(Error reports and suggestions welcome!)**
 
 ### Places to search for answers:
@@ -47,5 +47,6 @@
 - Extremely useful for troubleshooting and optimize resources.
 - `dag.enabled = true` will draw a flowchart for the pipeline. Needs graphviz installed.
 
-
+### Acknowledgement
+- [@danielecook](https://github.com/danielecook) for getting me started with Nextflow.
 
