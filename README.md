@@ -1,6 +1,6 @@
 # Tips to get started with Nextflow scripting
 
-Nextflow can do SO much. Here only covers the very basics of the scripting and good-to-knows, but not configuration which would be more user-specific.
+Nextflow can do SO much. Here only covers the very basics of the scripting, but not configuration which would be more user-specific.
 
 **Error reports and suggestions welcome!**
 
