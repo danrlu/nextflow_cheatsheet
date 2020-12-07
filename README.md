@@ -38,8 +38,22 @@ Nextflow can do SO much. Here only covers the very basics of the scripting, but 
 - `input: path("A.txt")` and `input: path "A.txt"` generally both work. Occasionally had errors that required the following (tip from [@danielecook](https://github.com/danielecook)): 
   - if not in a tuple, use `input: path "A.txt"` 
   - if in a tuple, use `input: tuple path("A.txt"), path("B.txt")`
-- `tuple` is the same as `set`, the latter is deprecated. 
-- `path(A)` is almost the same as `file(A)`, however the first interprets a value of type string as the input file path (ie the location in the file system where it's stored), the latter interprets a value of type string and materialise it to a temporary files. It's recommended the use of `path` since it's less ambiguous and fits better in most use-cases.  
+- (from [@pditommaso](https://github.com/pditommaso)): `path(A)` is almost the same as `file(A)`, however the first interprets a value of type string as the input file path (ie the location in the file system where it's stored), the latter interprets a value of type string and materialise it to a temporary files. It's recommended the use of `path` since it's less ambiguous and fits better in most use-cases.
+
+### Deprecated operators (as of version 20.07.0)
+- Non exhaustive list.
+
+| New version | Old version | Where it is used | 
+| ------------- | ------------- | ------ | 
+| .Channel.of( ) | .Channel.from( ) | channel creation |
+| .Channel.fromList( ) | .Channel.from( ) | channel creation |
+| tuple  | set  | input/output declaration inside of process | 
+| .view( ) | .print( )  |  channel operation | 
+| .combine( )  | .spread( )  |  channel operation |  
+| NA |  .merge( ) |  channel operation |  
+| .groupTuple( )  | .groupBy( ) |  channel operation | 
+| .join( ) | .phase( ) |  channel operation | 
+
 
 
 ### DSL2
