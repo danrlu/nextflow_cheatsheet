@@ -36,9 +36,11 @@ Nextflow can do SO much. Here only covers the very basics of the scripting, but 
 - With `input: path("A.txt")` one can refer to the file in the script as `A.txt`. Side note `A.txt` doesn't have to be the same name as in channel creation, it can be anything, `input: path("B.txt")`, `input: path("n")` etc. 
 - With `input: path(A)` one can refer to the file in the script as `$A`
 - `input: path("A.txt")` and `input: path "A.txt"` generally both work. Occasionally had errors that required the following (tip from [@danielecook](https://github.com/danielecook)): 
-  - if not in a tuple, use `input: path “A.txt”` 
-  - if in a tuple, use `input: tuple path(“A.txt”), path(“B.txt”)`
-- `path(A)` is the same as `file(A)`. `tuple` is the same as `set`. It's recommended to use `path` and `tuple` with newer versions.
+  - if not in a tuple, use `input: path "A.txt"` 
+  - if in a tuple, use `input: tuple path("A.txt"), path("B.txt")`
+- `tuple` is the same as `set`, the latter is deprecated. 
+- `path(A)` is almost the same as `file(A)`, however the first interprets a value of type string as the input file path (ie the location in the file system where it's stored), the latter interprets a value of type string and materialise it to a temporary files. It's recommended the use of `path` since it's less ambiguous and fits better in most use-cases.  
+
 
 ### DSL2
 - Moving to DSL2 is a one-way street. It's so intuitive with clean and readable code.
