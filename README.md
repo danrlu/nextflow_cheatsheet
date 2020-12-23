@@ -24,6 +24,31 @@ Nextflow can do SO much. Here only covers the very basics of the scripting, but 
   - `${workflow.launchDir}` to refer to where the script is called from. 
 - They are more reiable than `$PWD` or `$pwd` in the script section.
 
+### Required parameters
+- Nextflow recommends to have a default value for each parameter and let users overwrite it. 
+- If want to require users to specify a parameter value:
+```
+    params.reference == ""
+
+    if (params.reference == null) {
+        println """
+        Please specify a reference genome with --reference"
+        """
+        exit 1
+    }
+```
+- If no value is given to a paramter, it is implicitly considered 'true'. So we use this to print help message `nextflow main.nf --help`
+```
+    def print_help_msg() {
+       ...
+    }
+
+    if (params.help) {
+        print_help_msg()
+        exit 0
+    }
+```
+
 ### `Channel.fromPath("A.txt")` in channel creation
 - `Channel.from( "A.txt" )` will put `A.txt` as is into the channel 
 - `Channel.fromPath( "A.txt" )` will add a full path (usually current directory) and put `/path/A.txt` into the channel. 
