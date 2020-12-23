@@ -28,7 +28,7 @@ Nextflow can do SO much. Here only covers the very basics of the scripting, but 
 - Nextflow recommends to have a default value for each parameter and let users overwrite it. 
 - If want to require users to specify a parameter value:
 ```
-    params.reference == ""
+    // params.reference = "" // do not initiate the parameter anywhere
 
     if (params.reference == null) {
         println """
