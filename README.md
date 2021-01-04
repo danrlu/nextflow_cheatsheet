@@ -24,29 +24,34 @@ Nextflow can do SO much. Here only covers the very basics of the scripting, but 
   - `${workflow.launchDir}` to refer to where the script is called from. 
 - They are more reiable than `$PWD` or `$pwd` in the script section.
 
-### Required parameters
-- Nextflow recommends to have a default value for each parameter and let users overwrite it. 
-- If want to require users to specify a parameter value:
+### Require users to sepcify a parameter value
+- There are 2 types of paramters: (a) one with no actual value (b) one with actual values. 
+- **(a)** If no value is given to a paramter, it is implicitly considered 'true'. So we can use this to run debug mode `nextflow main.nf --debug`
 ```
-    params.reference = null   // no quotes. this line is optional.
-
-    if (params.reference == null) {
-        println """
-        Please specify a reference genome with --reference"
-        """
-        exit 1
+    if (params.debug) {
+        ... (set parameters for debug mode)
+    } else {
+        ... (set parameters for normal use)
     }
 ```
-- If no value is given to a paramter, it is implicitly considered 'true'. So we use this to print help message `nextflow main.nf --help`
+   - or to print help message `nextflow main.nf --help`
 ```
-    def print_help_msg() {
-       ...
-    }
-
     if (params.help) {
-        print_help_msg()
+        println """
+        ... (help msg here)
+        """
         exit 0
     }
+```
+
+- **(b)** For parameters that need to have a value, Nextflow recommends to set a default and let users to overwrite it as needed. However, if you want to require it to be specified by the user:
+```
+    params.reference = null   // no quotes. this line is optional, because without initialising the parameter it will default to null. 
+    if (params.reference == null) error "Please specify a reference genome with --reference"
+```  
+  - Below works most of the time, but it will not print the error message when: `nextflow main.nf --reference` (without specifying a value) because this will set `params.reference` to `true` (see point **(a)**) and `if (!params.reference)` will become `false`.
+```
+    if (!params.reference) error "Please specify a reference genome with --reference"
 ```
 
 ### `Channel.fromPath("A.txt")` in channel creation
