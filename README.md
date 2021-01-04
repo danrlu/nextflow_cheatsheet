@@ -4,11 +4,13 @@ Nextflow can do SO much. Here only covers the very basics of the scripting, but 
 
 **Error reports and suggestions welcome!**
 
+
 ### Places to search for answers:
 - [Nextflow patterns, official](https://nextflow-io.github.io/patterns/index.html)
 - [Gitter chat room](https://gitter.im/nextflow-io/nextflow)
 - [Google group](https://groups.google.com/forum/#!forum/nextflow)
 - The old posts in these places are a treasure dump that answered 99% of my questions. As an example, the last function `.collect{ it[1] }` in the [cheatsheet](https://github.com/danrlu/Nextflow_cheatsheet/blob/main/nextflow_cheatsheet.pdf) came from a post in Gitter by [@Juke34](https://github.com/Juke34)
+
 
 ### The working directory
 - **Each execution of a process happens in its own temporary working directory.** 
@@ -18,15 +20,17 @@ Nextflow can do SO much. Here only covers the very basics of the scripting, but 
 - Be mindful that if the `"""` script section `"""` involves changing directory, such as `cd` or `rmarkdown::render( knit_root_dir = "folder/" )`, Nextflow will still only search the working directory for output files. 
 - Run `nextflow clean -f` in the excecution folder to clean up the working directories.
 
+
 ### Where am I?
 - Throughout Nextflow scripts, one can use 
   - `${workflow.projectDir}` to refer to where the nextflow script (usually main.nf) locates. For example: `publishDir "${workflow.projectDir}/output", mode: 'copy'` or `Rscript ${workflow.projectDir}/bin/task.R`.
   - `${workflow.launchDir}` to refer to where the script is called from. 
 - They are more reiable than `$PWD` or `$pwd` in the script section.
 
+
 ### Require users to sepcify a parameter value
 - There are 2 types of paramters: (a) one with no actual value (b) one with actual values. 
-- **(a)** If no value is given to a paramter, it is implicitly considered 'true'. So we can use this to run debug mode `nextflow main.nf --debug`
+- **(a)** If a parameter is specified but no value is given, it is implicitly considered `true`. So one can use this to run debug mode `nextflow main.nf --debug`
 ```
     if (params.debug) {
         ... (set parameters for debug mode)
@@ -44,15 +48,17 @@ Nextflow can do SO much. Here only covers the very basics of the scripting, but 
     }
 ```
 
-- **(b)** For parameters that need to have a value, Nextflow recommends to set a default and let users to overwrite it as needed. However, if you want to require it to be specified by the user:
+- **(b)** For parameters that need to contain a value, Nextflow recommends to set a default and let users to overwrite it as needed. However, if you want to require it to be specified by the user:
 ```
-    params.reference = null   // no quotes. this line is optional, because without initialising the parameter it will default to null. 
+    params.reference = null   // no quotes. this line is optional, since without initialising the parameter it will default to null. 
     if (params.reference == null) error "Please specify a reference genome with --reference"
 ```  
-  - Below works most of the time, but it will not print the error message when: `nextflow main.nf --reference` (without specifying a value) because this will set `params.reference` to `true` (see point **(a)**) and `if (!params.reference)` will become `false`.
+
+- Below works as long as the user always append a value: `--reference=something`. It will not print the error message with: `nextflow main.nf --reference` (without specifying a value) because this will set `params.reference` to `true` (see point **(a)**) and `!params.reference` will be `false`. 
 ```
     if (!params.reference) error "Please specify a reference genome with --reference"
 ```
+
 
 ### `Channel.fromPath("A.txt")` in channel creation
 - `Channel.from( "A.txt" )` will put `A.txt` as is into the channel 
@@ -62,6 +68,7 @@ Nextflow can do SO much. Here only covers the very basics of the scripting, but 
 - In other words, `Channel.fromPath` will only add a full path if there isn't already one and ensure there is always a full path in the resulting channel.
 - This goes hand in hand with `input: path("A.txt")` inside the process, where **Nextflow actually creates a symlink named `A.txt`** (note the path from first / to last / is stripped) **linking to `/path/A.txt` in the working directory**, so it can be accessed within the working directory by the script `cat A.txt` without specifying a path.
 
+
 ### `input: path("A.txt")` in the process section 
 - With `input: path("A.txt")` one can refer to the file in the script as `A.txt`. Side note `A.txt` doesn't have to be the same name as in channel creation, it can be anything, `input: path("B.txt")`, `input: path("n")` etc. 
 - With `input: path(A)` one can refer to the file in the script as `$A`
@@ -69,21 +76,6 @@ Nextflow can do SO much. Here only covers the very basics of the scripting, but 
   - if not in a tuple, use `input: path "A.txt"` 
   - if in a tuple, use `input: tuple path("A.txt"), path("B.txt")`
 - (from [@pditommaso](https://github.com/pditommaso)): `path(A)` is almost the same as `file(A)`, however the first interprets a value of type string as the input file path (ie the location in the file system where it's stored), the latter interprets a value of type string and materialise it to a temporary files. It's recommended the use of `path` since it's less ambiguous and fits better in most use-cases.
-
-### Deprecated operators (as of version 20.07.0)
-- Non exhaustive list.
-
-| New version | Old version | Where it is used | 
-| ------------- | ------------- | ------ | 
-| .Channel.of( ) | .Channel.from( ) | channel creation |
-| .Channel.fromList( ) | .Channel.from( ) | channel creation |
-| tuple  | set  | input/output declaration inside of process | 
-| .view( ) | .print( )  |  channel operation | 
-| .combine( )  | .spread( )  |  channel operation |  
-| NA |  .merge( ) |  channel operation |  
-| .groupTuple( )  | .groupBy( ) |  channel operation | 
-| .join( ) | .phase( ) |  channel operation | 
-
 
 
 ### DSL2
@@ -93,6 +85,17 @@ Nextflow can do SO much. Here only covers the very basics of the scripting, but 
 - In DSL2, each process can only be called once. The solution is either `.concat()` the input channels so they run as parallel processes, or put the process in a module and import multiple times from the module.
 - DSL2 also enforces that all inputs needs to be combined into 1 channel before it goes into a process. See the [cheatsheet](https://github.com/danrlu/Nextflow_cheatsheet/blob/main/nextflow_cheatsheet.pdf) for useful operators. 
 - [Simple steps to convert from original syntax to DSL2](https://github.com/danrlu/Nextflow_cheatsheet/blob/main/nextflow_convert_DSL2.pdf)
+- [Deprecated operators](https://www.nextflow.io/docs/latest/dsl2.html#dsl2-migration-notes).
+
+
+### My personal favorite feature of workflow: run reports
+- `nextflow main.nf -with-report -with-timeline -with-dag`
+- `-with-report` Nextflow html report contains resource usage for each process, and details (most useful being the status and working directory) for each process 
+- `-with-timeline` How much wait time and run time each process took for the run.
+- `-with-dag` Make a flowchart to show the relationship of channels and processes. 
+- [Software dependencies](https://www.nextflow.io/docs/latest/tracing.html#execution-report). Note the differences on Mac and Linux.
+- How to set them up in the [nextflow.config](https://github.com/AndersenLab/wi-gatk/blob/master/nextflow.config) so they are automatically generated for each run. Credit [@danielecook](https://github.com/danielecook) 
+
 
 ### Acknowledgement
 - [@danielecook](https://github.com/danielecook) for offering lots of help and advice.
