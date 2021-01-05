@@ -21,6 +21,25 @@ Nextflow can do SO much. Here only covers the very basics of the scripting, but 
 - They are more reiable than `$PWD` or `$pwd` in the script section.
 
 
+### Print - debugger's best friend
+- To print a channel, use `.view()`. It's especially useful to resolve `WARN: Input tuple does not match input set cardinality declared by process`. (Don't forget to remove `.view()` after debugging) 
+```
+  channel_vcf
+    .combine(channel_index)
+    .combine(channel_chr)
+    .view()
+```
+- To print from the script section inside the processes, add `echo true`.
+```
+  process test {
+    echo true    // this will print the stdout from the script section on Terminal
+    input: path(vcf)
+    """
+    head $vcf
+    """
+  }
+```
+
 ### `Channel.fromPath("A.txt")` in channel creation
 - `Channel.from( "A.txt" )` will put `A.txt` as is into the channel 
 - `Channel.fromPath( "A.txt" )` will add a full path (usually current directory) and put `/path/A.txt` into the channel. 
@@ -32,11 +51,11 @@ Nextflow can do SO much. Here only covers the very basics of the scripting, but 
 
 ### `input: path("A.txt")` in the process section 
 - With `input: path("A.txt")` one can refer to the file in the script as `A.txt`. Side note `A.txt` doesn't have to be the same name as in channel creation, it can be anything, `input: path("B.txt")`, `input: path("n")` etc. 
-- With `input: path(A)` one can refer to the file in the script as `$A`
+- With `input: path(A)` one can refer to the file in the script as `$A`, and the value of `$A` will be the original file name (without path). 
 - `input: path("A.txt")` and `input: path "A.txt"` generally both work. Occasionally had errors that required the following (tip from [@danielecook](https://github.com/danielecook)): 
   - if not in a tuple, use `input: path "A.txt"` 
   - if in a tuple, use `input: tuple path("A.txt"), path("B.txt")`
-- (from [@pditommaso](https://github.com/pditommaso)): `path(A)` is almost the same as `file(A)`, however the first interprets a value of type string as the input file path (ie the location in the file system where it's stored), the latter interprets a value of type string and materialise it to a temporary files. It's recommended the use of `path` since it's less ambiguous and fits better in most use-cases.
+- from [@pditommaso](https://github.com/pditommaso): `path(A)` is almost the same as `file(A)`, however the first interprets a value of type string as the input file path (ie the location in the file system where it's stored), the latter interprets a value of type string and materialise it to a temporary files. It's recommended the use of `path` since it's less ambiguous and fits better in most use-cases.
 
 
 ### DSL2
