@@ -14,10 +14,11 @@
 
 
 ### Where am I?
-- Throughout Nextflow scripts, one can use 
-  - `${workflow.projectDir}` to refer to where the nextflow script (usually main.nf) locates. For example: `publishDir "${workflow.projectDir}/output", mode: 'copy'` or `Rscript ${workflow.projectDir}/bin/task.R`.
+- In Nextflow scripts (.nf files), one can use 
+  - `${workflow.projectDir}` to refer where the project locates (usually the folder of main.nf). For example: `publishDir "${workflow.projectDir}/output", mode: 'copy'` or `Rscript ${workflow.projectDir}/bin/task.R`.
   - `${workflow.launchDir}` to refer to where the script is called from. 
-- They are more reiable than `$PWD` or `$pwd` in the script section.
+- `$baseDir` usually refers to the same folder as `${workflow.projectDir}` but it can also be used in the config file, where `${workflow.projectDir}` and `${workflow.launchDir}` are not accessible.   
+- They are much more reiable than `$PWD` or `$pwd`.
 
 
 ### Print - debugger's best friend
