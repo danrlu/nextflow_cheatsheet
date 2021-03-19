@@ -5,6 +5,7 @@
 
 ### The working directory
 - **Each execution of a process happens in its own temporary working directory.** 
+- Specify the location of working directory with `workDir = '/path_to_tmp/'` in nextflow.config, or with `-w` option when running `nextflow main.nf`.
 - The working directory is the folder named like `/path_to_tmp/4d9c3b333734a5b63d66f0bc0cfcdc` that Nextflow points you to when there is an error in execution. This folder contains the error log that could be useful for debugging. One can find the folder path in the .nextflow.log or in the report.html. 
 - This folder only contains files (usually in form of symlinks, see below) from the input channel, so it's isolated from the rest of the file system. 
 - This folder will also contain all output files (unless specifically directed elsewhere), and only those specified in the output channels and `publishDir` will be moved or copied to the `publishDir`. 
