@@ -2,6 +2,11 @@
 
 **Error reports and suggestions welcome!**
 
+- Start here: a great [DSL2 beginners' guide](https://github.com/chlazaris/Nextflow_training/blob/main/nextflow_cheatsheet.md) by Harriz Lazaris @chlazaris for Nextflow.
+
+- [Nextflow cheatsheet](https://github.com/danrlu/Nextflow_cheatsheet/blob/main/nextflow_cheatsheet.pdf) to create and combine channels. 
+
+- [Practical guide](https://github.com/danrlu/Nextflow_cheatsheet/blob/main/nextflow_convert_DSL2.pdf) to convert DSL1 to DSL2.
 
 ### The working directory
 - **Each execution of a process happens in its own temporary working directory.** 
