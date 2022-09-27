@@ -2,11 +2,14 @@
 
 **Error reports and suggestions welcome!**
 
-- Start here: a great [DSL2 beginners' guide](https://github.com/chlazaris/Nextflow_training/blob/main/nextflow_cheatsheet.md) by Harriz Lazaris @chlazaris for Nextflow.
+### Some resources
+- [DSL2 beginners' guide](https://github.com/chlazaris/Nextflow_training/blob/main/nextflow_cheatsheet.md) by Harriz Lazaris @chlazaris for Nextflow.
 
 - [Nextflow cheatsheet](https://github.com/danrlu/Nextflow_cheatsheet/blob/main/nextflow_cheatsheet.pdf) to create and combine channels. 
 
 - [Practical guide](https://github.com/danrlu/Nextflow_cheatsheet/blob/main/nextflow_convert_DSL2.pdf) to convert DSL1 to DSL2.
+
+- [Nextflow Slack](https://www.nextflow.io/slack-invite.html) for all questions and to connect with others.
 
 ### The working directory
 - **Each execution of a process happens in its own temporary working directory.** 
@@ -83,7 +86,37 @@
 - [Software dependencies](https://www.nextflow.io/docs/latest/tracing.html#execution-report) to use these features. Note the differences on Mac and Linux.
 - How to set them up in the [nextflow.config](https://github.com/AndersenLab/wi-gatk/blob/master/nextflow.config) so they are automatically generated for each run. Credit [@danielecook](https://github.com/danielecook) 
 
-### [More advanced tips](https://github.com/danrlu/Nextflow_cheatsheet/blob/main/advanced_tips.md)
+
+### Require users to sepcify a parameter value
+- There are 2 types of paramters: (a) one with no actual value (b) one with actual values. 
+- **(a)** If a parameter is specified but no value is given, it is implicitly considered `true`. So one can use this to run debug mode `nextflow main.nf --debug`
+```
+    if (params.debug) {
+        ... (set parameters for debug mode)
+    } else {
+        ... (set parameters for normal use)
+    }
+```
+   - or to print help message `nextflow main.nf --help`
+```
+    if (params.help) {
+        println """
+        ... (help msg here)
+        """
+        exit 0
+    }
+```
+
+- **(b)** For parameters that need to contain a value, Nextflow recommends to set a default and let users to overwrite it as needed. However, if you want to require it to be specified by the user:
+```
+    params.reference = null   // no quotes. this line is optional, since without initialising the parameter it will default to null. 
+    if (params.reference == null) error "Please specify a reference genome with --reference"
+```  
+
+- Below works as long as the user always append a value: `--reference=something`. It will not print the error message with: `nextflow main.nf --reference` (without specifying a value) because this will set `params.reference` to `true` (see point **(a)**) and `!params.reference` will be `false`. 
+```
+    if (!params.reference) error "Please specify a reference genome with --reference"
+```
 
 ### Acknowledgement
 - [@danielecook](https://github.com/danielecook) for offering lots of help and advice.
