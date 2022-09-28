@@ -120,4 +120,4 @@
 
 ### Acknowledgement
 - [@danielecook](https://github.com/danielecook) for offering lots of help and advice.
-
+- The last function `.collect{ it[1] }` in the [cheatsheet](https://github.com/danrlu/Nextflow_cheatsheet/blob/main/nextflow_cheatsheet.pdf) came from a post in Nextflow Gitter (now replaced by Nextflow Slack) by [Juke34](https://github.com/Juke34)
