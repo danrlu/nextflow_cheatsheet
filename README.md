@@ -1,6 +1,6 @@
-# Tips to get started with Nextflow scripting
+# Tips for Nextflow scripting
 
-**Error reports and suggestions welcome!**
+**These are notes for myself gathered through using Nextflow, and hopefully useful for others. Error reports and suggestions welcome!**
 
 ### Some resources
 - [DSL2 beginners' guide](https://github.com/chlazaris/Nextflow_training/blob/main/nextflow_cheatsheet.md) by Harriz Lazaris @chlazaris for Nextflow.
@@ -89,7 +89,7 @@
 
 ### Require users to sepcify a parameter value
 - There are 2 types of paramters: (a) one with no actual value (b) one with actual values. 
-- **(a)** If a parameter is specified but no value is given, it is implicitly considered `true`. So one can use this to run debug mode `nextflow main.nf --debug`
+- **(a)** If a parameter is specified but no value is given, it is implicitly considered `true`. For example, one can use this to run debug mode `nextflow main.nf --debug`
 ```
     if (params.debug) {
         ... (set parameters for debug mode)
