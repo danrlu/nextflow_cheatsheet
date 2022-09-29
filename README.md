@@ -1,4 +1,4 @@
-# Tips for Nextflow scripting
+# Tips and cheatsheet for Nextflow
 
 These are notes for myself gathered through using Nextflow, and hopefully useful for others. **Error reports and suggestions welcome!**
 
