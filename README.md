@@ -3,7 +3,7 @@
 These are notes for myself gathered through using Nextflow, and hopefully useful for others. **Error reports and suggestions welcome!**
 
 ### Some resources
-- [DSL2 beginners' guide](https://github.com/chlazaris/Nextflow_training/blob/main/nextflow_cheatsheet.md) by (Harriz Lazaris)[https://github.com/chlazaris] for Nextflow.
+- [DSL2 beginners' guide](https://github.com/chlazaris/Nextflow_training/blob/main/nextflow_cheatsheet.md) by [Harriz Lazaris](https://github.com/chlazaris) for Nextflow.
 
 - [Nextflow channel operation cheatsheet](https://github.com/danrlu/nextflow_cheatsheet/blob/main/nextflow_channel_cheatsheet_220929.pdf). 
 
