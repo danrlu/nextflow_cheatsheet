@@ -5,7 +5,7 @@ These are notes for myself gathered through using Nextflow, and hopefully useful
 ### Some resources
 - [DSL2 beginners' guide](https://github.com/chlazaris/Nextflow_training/blob/main/nextflow_cheatsheet.md) by [Harriz Lazaris](https://github.com/chlazaris) for Nextflow.
 
-- [Nextflow channel operation cheatsheet](https://github.com/danrlu/nextflow_cheatsheet/blob/main/nextflow_channel_cheatsheet_220929.pdf). 
+- [Nextflow channel operation cheatsheet](https://github.com/danrlu/Nextflow_cheatsheet/blob/main/nextflow_cheatsheet.pdf). 
 
 - [Practical guide](https://github.com/danrlu/Nextflow_cheatsheet/blob/main/nextflow_convert_DSL2.pdf) to convert DSL1 to DSL2.
 
@@ -51,7 +51,7 @@ The hardest error to debug (assuming one is familiar with bioinformatics tools) 
     """
   }
 ```
-- The [channel operation cheatsheet](https://github.com/danrlu/nextflow_cheatsheet/blob/main/nextflow_channel_cheatsheet_220929.pdf) contains the channel operations I use most often.
+- The [channel operation cheatsheet](https://github.com/danrlu/Nextflow_cheatsheet/blob/main/nextflow_cheatsheet.pdf) contains the channel operations I use most often.
 
 
 ### `Channel.from` and `Channel.fromPath` what's the difference?
@@ -71,7 +71,7 @@ As biologists, we turn every rock.
   - If not in a tuple, use `input: path "A.txt"` 
   - If in a tuple, use `input: tuple path("A.txt"), path("B.txt")`
   - This goes the same for `output`.
-- From [@pditommaso](https://github.com/pditommaso): `path(A)` is almost the same as `file(A)`, however the first interprets a value of type string as the input file path (ie the location in the file system where it's stored), the latter interprets a value of type string and materialise it to a temporary files. It's recommended the use of `path` since it's less ambiguous and fits better in most use-cases.
+- From [pditommaso](https://github.com/pditommaso): `path(A)` is almost the same as `file(A)`, however the first interprets a value of type string as the input file path (ie the location in the file system where it's stored), the latter interprets a value of type string and materialise it to a temporary files. It's recommended the use of `path` since it's less ambiguous and fits better in most use-cases.
 
 
 ### DSL2
@@ -80,7 +80,7 @@ This is a little outdated. Is anyone still DSL1-ing??
 - In DSL1, each queue channel can only be used once. 
 - In DSL2, a channel can be fed into multiple processes
 - In DSL2, each process can only be called once. The solution is either `.concat()` the input channels so they run as parallel processes, or put the process in a module and import multiple times from the module. (One may be able to call a process in different workflows, haven't tested yet).
-- DSL2 also enforces that all inputs needs to be combined into 1 channel before it goes into a process. See the [cheatsheet](https://github.com/danrlu/nextflow_cheatsheet/blob/main/nextflow_channel_cheatsheet_220929.pdf) for useful operators. 
+- DSL2 also enforces that all inputs needs to be combined into 1 channel before it goes into a process. See the [cheatsheet](https://github.com/danrlu/Nextflow_cheatsheet/blob/main/nextflow_cheatsheet.pdf) for useful operators. 
 - [Simple steps to convert from original syntax to DSL2](https://github.com/danrlu/Nextflow_cheatsheet/blob/main/nextflow_convert_DSL2.pdf)
 - [Deprecated operators](https://www.nextflow.io/docs/latest/dsl2.html#dsl2-migration-notes).
 
@@ -92,7 +92,7 @@ Beautiful graphics especially useful for performance monitoring.
 - `-with-timeline` How much wait time and run time each process took for the run. Very useful reference for optimizing resource allocation and improving run time.
 - `-with-dag` Make a flowchart to show the relationship of channels and processes. 
 - [Software dependencies](https://www.nextflow.io/docs/latest/tracing.html#execution-report) to use these features. Note the differences on Mac and Linux.
-- How to set them up in the [nextflow.config](https://github.com/AndersenLab/wi-gatk/blob/master/nextflow.config) so they are automatically generated for each run. Credit [@danielecook](https://github.com/danielecook) 
+- How to set them up in the [nextflow.config](https://github.com/AndersenLab/wi-gatk/blob/master/nextflow.config) so they are automatically generated for each run. Credit [danielecook](https://github.com/danielecook) 
 
 
 ### Require users to sepcify a parameter value
