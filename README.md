@@ -51,7 +51,7 @@ The hardest error to debug (assuming one is familiar with bioinformatics tools) 
     """
   }
 ```
-- The [channel operation cheatsheet](https://github.com/danrlu/Nextflow_cheatsheet/blob/main/nextflow_cheatsheet_220929.pdf) contains the channel operations I use most often.
+- The [channel operation cheatsheet](https://github.com/danrlu/nextflow_cheatsheet/blob/main/nextflow_channel_cheatsheet_220929.pdf) contains the channel operations I use most often.
 
 
 ### `Channel.from` and `Channel.fromPath` what's the difference?
@@ -80,7 +80,7 @@ This is a little outdated. Is anyone still DSL1-ing??
 - In DSL1, each queue channel can only be used once. 
 - In DSL2, a channel can be fed into multiple processes
 - In DSL2, each process can only be called once. The solution is either `.concat()` the input channels so they run as parallel processes, or put the process in a module and import multiple times from the module. (One may be able to call a process in different workflows, haven't tested yet).
-- DSL2 also enforces that all inputs needs to be combined into 1 channel before it goes into a process. See the [cheatsheet](https://github.com/danrlu/Nextflow_cheatsheet/blob/main/nextflow_cheatsheet.pdf) for useful operators. 
+- DSL2 also enforces that all inputs needs to be combined into 1 channel before it goes into a process. See the [cheatsheet](https://github.com/danrlu/nextflow_cheatsheet/blob/main/nextflow_channel_cheatsheet_220929.pdf) for useful operators. 
 - [Simple steps to convert from original syntax to DSL2](https://github.com/danrlu/Nextflow_cheatsheet/blob/main/nextflow_convert_DSL2.pdf)
 - [Deprecated operators](https://www.nextflow.io/docs/latest/dsl2.html#dsl2-migration-notes).
 
