@@ -5,32 +5,35 @@
 ### Some resources
 - [DSL2 beginners' guide](https://github.com/chlazaris/Nextflow_training/blob/main/nextflow_cheatsheet.md) by Harriz Lazaris @chlazaris for Nextflow.
 
-- [Nextflow cheatsheet](https://github.com/danrlu/Nextflow_cheatsheet/blob/main/nextflow_cheatsheet.pdf) to create and combine channels. 
+- [Nextflow channel operation cheatsheet](https://github.com/danrlu/Nextflow_cheatsheet/blob/main/nextflow_cheatsheet.pdf). 
 
 - [Practical guide](https://github.com/danrlu/Nextflow_cheatsheet/blob/main/nextflow_convert_DSL2.pdf) to convert DSL1 to DSL2.
 
 - [Nextflow Slack](https://www.nextflow.io/slack-invite.html) for all questions and to connect with others.
 
 ### The working directory
+Understanding working directory was the hardest learning piece for me, and it turned out to be key to understand where the output files are and how to debug errors b/c often all files and logs you need are in the working directory.  
 - **Each execution of a process happens in its own temporary working directory.** 
 - Specify the location of working directory with `workDir = '/path_to_tmp/'` in nextflow.config, or with `-w` option when running `nextflow main.nf`.
-- The working directory is the folder named like `/path_to_tmp/4d9c3b333734a5b63d66f0bc0cfcdc` that Nextflow points you to when there is an error in execution. This folder contains the error log that could be useful for debugging. One can find the folder path in the .nextflow.log or in the report.html. 
-- This folder only contains files (usually in form of symlinks, see below) from the input channel, so it's isolated from the rest of the file system. 
-- This folder will also contain all output files (unless specifically directed elsewhere), and only those specified in the output channels and `publishDir` will be moved or copied to the `publishDir`. 
-- Note that with `publishDir "path", mode: 'move'`, the output file will be moved outside of the working directory and Nextflow will not be able to use it as input for another process, so only use it when there is not a following process that uses the output file. 
-- Be mindful that if the `""" (script section) """` involves changing directory, such as `cd` or `rmarkdown::render( knit_root_dir = "folder/" )`, Nextflow will still only search the working directory for output files. 
+- Each excecution of a process creates one folder in the working directory. This folder starts off with files only from the input channel (usually in form of symlinks, see below), so it's fairly isolated from the rest of the file system. 
+- As the process runs, this folder will also contain all intermediate files, logs, and output files (unless specifically directed elsewhere), and only those specified in the output channels and `publishDir` will be moved or copied to the `publishDir`. 
+  - Anything you want to specify in `publishDir` needs to be in an output channel.
+  - Note that with `publishDir "path", mode: 'move'`, the output file will be moved outside of the working directory and Nextflow will not be able to use it as input for another process, so only use it when there is not a following process that uses the output file. 
+  - Be mindful that if the `""" (script section) """` involves changing directory, such as `cd` or `rmarkdown::render( knit_root_dir = "folder/" )`, Nextflow will still only search the working directory for output files b/c the execution is in the working directory.
+- To find the location of this folder in the working direcotry: it is the folder named like `/path_to_tmp/4d9c3b333734a5b63d66f0bc0cfcdc` that Nextflow points you to when there is an error in execution. This folder usually already contains all files needed to reproduce the error, and Nextflow error message gives clear direction how reproduce the error. One can also find the folder path in the `.nextflow.log` or in the `report.html`. 
 - Run `nextflow clean -f` in the excecution folder to clean up the working directories.
 
 
 ### Where am I?
+Actual data is usually elsewhere from where the Nextflow scripts are, and be able to specify relative file path makes the code more portable. The options below are much more reiable than `$PWD` or `$pwd`.
 - In Nextflow scripts (.nf files), one can use 
   - `${workflow.projectDir}` to refer where the project locates (usually the folder of `main.nf`). For example: `publishDir "${workflow.projectDir}/output", mode: 'copy'` or `Rscript ${workflow.projectDir}/bin/task.R`.
   - `${workflow.launchDir}` to refer to where the script is called from, aka the current folder in Terminal when running `nextflow main.nf`.
 - `$baseDir` usually refers to the same folder as `${workflow.projectDir}` but it can also be used in the config file, where `${workflow.projectDir}` and `${workflow.launchDir}` are not accessible.   
-- It saves a lot of confusion to specify explicitly these path in the code, and they are much more reiable than `$PWD` or `$pwd`.
 
 
 ### Print - debugger's best friend
+The hardest error to debug, assuming one is familiar with bioinformatics tools, is often channels structure error.
 - To print a channel, use `.view()`. It's especially useful to resolve `WARN: Input tuple does not match input set cardinality declared by process`. (Don't forget to remove `.view()` after debugging) 
 ```
   channel_vcf
@@ -48,8 +51,11 @@
     """
   }
 ```
+- The [channel operation cheatsheet](https://github.com/danrlu/Nextflow_cheatsheet/blob/main/nextflow_cheatsheet.pdf) contains the channel operations I use most often.
 
-### `Channel.fromPath("A.txt")` in channel creation
+
+### `Channel.from` and `Channel.fromPath` what's the difference?
+As biologists, we turn every rock.
 - `Channel.from( "A.txt" )` will put `A.txt` as is into the channel 
 - `Channel.fromPath( "A.txt" )` will add a full path (usually current directory) and put `/path/A.txt` into the channel. 
 - `Channel.fromPath( "folder/A.txt" )` will add a full path (usually current directory) and put `/path/folder/A.txt` into the channel. 
@@ -69,6 +75,7 @@
 
 
 ### DSL2
+This is a little outdated. Is anyone still DSL1-ing??
 - Moving to DSL2 is a one-way street. It's so intuitive with clean and readable code.
 - In DSL1, each queue channel can only be used once. 
 - In DSL2, a channel can be fed into multiple processes
@@ -79,8 +86,9 @@
 
 
 ### Run reports
+Beautiful graphics especially useful for performance monitoring.
 - `nextflow main.nf -with-report -with-timeline -with-dag`
-- `-with-report` Nextflow html report contains resource usage for each process, and details (most useful being the status and working directory) for each process 
+- `-with-report` Nextflow html report contains resource usage for each process, and details (most useful being the status and working directory) for each process. 
 - `-with-timeline` How much wait time and run time each process took for the run. Very useful reference for optimizing resource allocation and improving run time.
 - `-with-dag` Make a flowchart to show the relationship of channels and processes. 
 - [Software dependencies](https://www.nextflow.io/docs/latest/tracing.html#execution-report) to use these features. Note the differences on Mac and Linux.
