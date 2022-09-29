@@ -3,7 +3,7 @@
 These are notes for myself gathered through using Nextflow, and hopefully useful for others. **Error reports and suggestions welcome!**
 
 ### Some resources
-- [DSL2 beginners' guide](https://github.com/chlazaris/Nextflow_training/blob/main/nextflow_cheatsheet.md) by Harriz Lazaris @chlazaris for Nextflow.
+- [DSL2 beginners' guide](https://github.com/chlazaris/Nextflow_training/blob/main/nextflow_cheatsheet.md) by (Harriz Lazaris)[https://github.com/chlazaris] for Nextflow.
 
 - [Nextflow channel operation cheatsheet](https://github.com/danrlu/nextflow_cheatsheet/blob/main/nextflow_channel_cheatsheet_220929.pdf). 
 
@@ -127,6 +127,6 @@ Beautiful graphics especially useful for performance monitoring.
 ```
 
 ### Acknowledgement
-- [@danielecook](https://github.com/danielecook) for offering lots of help and advice.
+- [danielecook](https://github.com/danielecook) for offering lots of help and advice.
 - The last function `.collect{ it[1] }` in the [cheatsheet](https://github.com/danrlu/Nextflow_cheatsheet/blob/main/nextflow_cheatsheet.pdf) came from a post in Nextflow Gitter (now replaced by Nextflow Slack) by [Juke34](https://github.com/Juke34)
 - [pditommaso](https://github.com/pditommaso) for suggesting edits.
