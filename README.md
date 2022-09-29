@@ -1,6 +1,6 @@
 # Tips for Nextflow scripting
 
-**These are notes for myself gathered through using Nextflow, and hopefully useful for others. Error reports and suggestions welcome!**
+These are notes for myself gathered through using Nextflow, and hopefully useful for others. **Error reports and suggestions welcome!**
 
 ### Some resources
 - [DSL2 beginners' guide](https://github.com/chlazaris/Nextflow_training/blob/main/nextflow_cheatsheet.md) by Harriz Lazaris @chlazaris for Nextflow.
@@ -12,16 +12,16 @@
 - [Nextflow Slack](https://www.nextflow.io/slack-invite.html) for all questions and to connect with others.
 
 ### The working directory
-Understanding working directory was the hardest learning piece for me, and it turned out to be key to understand where the output files are and how to debug errors b/c often all files and logs you need are in the working directory.  
+Understanding working directory was the hardest learning piece for me, and it turned out to be key to understand where the files are and how to debug errors b/c often all files and logs you need are in the working directory.  
 - **Each execution of a process happens in its own temporary working directory.** 
-- Specify the location of working directory with `workDir = '/path_to_tmp/'` in nextflow.config, or with `-w` option when running `nextflow main.nf`.
+- Specify the location of the parent working directory with `workDir = '/path_to_tmp/'` in nextflow.config, or with `-w` option when running `nextflow main.nf`.
 - Each excecution of a process creates one folder in the working directory. This folder starts off with files only from the input channel (usually in form of symlinks, see below), so it's fairly isolated from the rest of the file system. 
 - As the process runs, this folder will also contain all intermediate files, logs, and output files (unless specifically directed elsewhere), and only those specified in the output channels and `publishDir` will be moved or copied to the `publishDir`. 
   - Anything you want to specify in `publishDir` needs to be in an output channel.
-  - Note that with `publishDir "path", mode: 'move'`, the output file will be moved outside of the working directory and Nextflow will not be able to use it as input for another process, so only use it when there is not a following process that uses the output file. 
-  - Be mindful that if the `""" (script section) """` involves changing directory, such as `cd` or `rmarkdown::render( knit_root_dir = "folder/" )`, Nextflow will still only search the working directory for output files b/c the execution is in the working directory.
+  - Note that with `publishDir "path", mode: 'move'`, the output file will be moved away from the working directory and Nextflow will not be able to use it as input for another process, so only use this option when there is not a following process that uses the output file. 
+  - Be mindful that if the `""" (script section) """` involves changing directory, such as `cd` or `rmarkdown::render( knit_root_dir = "folder/" )`, Nextflow will still only search the working directory for output files b/c the execution is in the working directory. tl;dr is this gets tricky, so try let Nextflow handle folder navigation as much as possible. 
 - To find the location of this folder in the working direcotry: it is the folder named like `/path_to_tmp/4d9c3b333734a5b63d66f0bc0cfcdc` that Nextflow points you to when there is an error in execution. This folder usually already contains all files needed to reproduce the error, and Nextflow error message gives clear direction how reproduce the error. One can also find the folder path in the `.nextflow.log` or in the `report.html`. 
-- Run `nextflow clean -f` in the excecution folder to clean up the working directories.
+- Run `nextflow clean -f` in the excecution folder to clean up the working directories, which often gets large and unnoticeds.
 
 
 ### Where am I?
@@ -33,7 +33,7 @@ Actual data is usually elsewhere from where the Nextflow scripts are, and be abl
 
 
 ### Print - debugger's best friend
-The hardest error to debug, assuming one is familiar with bioinformatics tools, is often channels structure error.
+The hardest error to debug (assuming one is familiar with bioinformatics tools) is often channels structure TnT
 - To print a channel, use `.view()`. It's especially useful to resolve `WARN: Input tuple does not match input set cardinality declared by process`. (Don't forget to remove `.view()` after debugging) 
 ```
   channel_vcf
@@ -129,3 +129,4 @@ Beautiful graphics especially useful for performance monitoring.
 ### Acknowledgement
 - [@danielecook](https://github.com/danielecook) for offering lots of help and advice.
 - The last function `.collect{ it[1] }` in the [cheatsheet](https://github.com/danrlu/Nextflow_cheatsheet/blob/main/nextflow_cheatsheet.pdf) came from a post in Nextflow Gitter (now replaced by Nextflow Slack) by [Juke34](https://github.com/Juke34)
+- [pditommaso](https://github.com/pditommaso) for suggesting edits.
