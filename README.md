@@ -5,7 +5,7 @@ These are notes for myself gathered through using Nextflow, and hopefully useful
 ### Some resources
 - [DSL2 beginners' guide](https://github.com/chlazaris/Nextflow_training/blob/main/nextflow_cheatsheet.md) by Harriz Lazaris @chlazaris for Nextflow.
 
-- [Nextflow channel operation cheatsheet](https://github.com/danrlu/Nextflow_cheatsheet/blob/main/nextflow_cheatsheet_220929.pdf). 
+- [Nextflow channel operation cheatsheet](https://github.com/danrlu/nextflow_cheatsheet/blob/main/nextflow_channel_cheatsheet_220929.pdf). 
 
 - [Practical guide](https://github.com/danrlu/Nextflow_cheatsheet/blob/main/nextflow_convert_DSL2.pdf) to convert DSL1 to DSL2.
 
