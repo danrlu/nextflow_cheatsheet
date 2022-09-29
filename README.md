@@ -20,8 +20,8 @@ Understanding working directory was the hardest learning piece for me, and it tu
   - Anything you want to specify in `publishDir` needs to be in an output channel.
   - Note that with `publishDir "path", mode: 'move'`, the output file will be moved away from the working directory and Nextflow will not be able to use it as input for another process, so only use this option when there is not a following process that uses the output file. 
   - Be mindful that if the `""" (script section) """` involves changing directory, such as `cd` or `rmarkdown::render( knit_root_dir = "folder/" )`, Nextflow will still only search the working directory for output files b/c the execution is in the working directory. tl;dr is this gets tricky, so try let Nextflow handle folder navigation as much as possible. 
-- To find the location of this folder in the working direcotry: it is the folder named like `/path_to_tmp/4d9c3b333734a5b63d66f0bc0cfcdc` that Nextflow points you to when there is an error in execution. This folder usually already contains all files needed to reproduce the error, and Nextflow error message gives clear direction how reproduce the error. One can also find the folder path in the `.nextflow.log` or in the `report.html`. 
-- Run `nextflow clean -f` in the excecution folder to clean up the working directories, which often gets large and unnoticeds.
+- To find the location of the working direcotry: it is the folder named like `/path_to_tmp/4d9c3b333734a5b63d66f0bc0cfcdc` that Nextflow points you to when there is an error in execution. This folder usually already contains all files needed to reproduce the error, and Nextflow error message gives clear direction how reproduce the error. One can also find the folder path in the `.nextflow.log` or in the `report.html`. 
+- Run `nextflow clean -f` in the excecution folder to clean up the working directories, which often gets large unnoticed.
 
 
 ### Where am I?
