@@ -66,16 +66,19 @@ As biologists, we turn every rock.
 
 ### `input: path("A.txt")` in the process section 
 - With `input: path("A.txt")` one can refer to the file in the script as `A.txt`. Side note `A.txt` doesn't have to be the same name as in channel creation, it can be anything, `input: path("B.txt")`, `input: path("n")` etc. 
-- With `input: path(A)` one can refer to the file in the script as `$A`, and the value of `$A` will be the original file name (without path, see section above). 
+- With `input: path(a)` one can refer to the file in the script as `$a`, and the value of `$a` will be the original file name (without path, see section above). 
 - `input: path("A.txt")` and `input: path "A.txt"` generally both work. Occasionally had errors that required the following (tip from [@danielecook](https://github.com/danielecook)): 
   - If not in a tuple, use `input: path "A.txt"` 
   - If in a tuple, use `input: tuple path("A.txt"), path("B.txt")`
   - This goes the same for `output`.
-- From [pditommaso](https://github.com/pditommaso): `path(A)` is almost the same as `file(A)`, however the first interprets a value of type string as the input file path (ie the location in the file system where it's stored), the latter interprets a value of type string and materialise it to a temporary files. It's recommended the use of `path` since it's less ambiguous and fits better in most use-cases.
+- From [pditommaso](https://github.com/pditommaso): `path(a)` is almost the same as `file(a)`, however the first interprets a value of type string as the input file path (ie the location in the file system where it's stored), the latter interprets a value of type string and materialise it to a temporary files. It's recommended the use of `path` since it's less ambiguous and fits better in most use-cases.
+- Side note that in the `""" (script section) """` (if you're using double quotes `"""`), to retrieve Nextflow varialbes use `$a`, and if there is a bash variable `b` that is created inside the code block, refere to it as `\$b`.
 
 
-### Variable number of items in the channel
-In the process section, one needs to specify `input: val(a), path(b)`, which implicitly needs to know how many values or files are contained in the channel. But we don't always know it ahead of time. For example the number of chromosomes could vary, or input is sometimes paired-end, sometimes single-end, or some previous processes may not generate an output. The workaround is to put them into a tuple and refer to it as `input: tuple path("*")`. 
+### Variable number of items in the channel; tuple inside a tuple?
+1 solution for both:
+- In the process section, one needs to specify `input: val(a), path(b)`, which implicitly needs to know how many values or files are contained in the channel. But we don't always know this ahead of time. For example the number of chromosomes could vary, or the input is sometimes paired-end, sometimes single-end, or some previous processes may not generate an output. The workaround is to put them into a tuple and refer to it as `input: tuple path("*")`.
+- This also works when there is tuple within a tuple in the channel 
 <img width="1211" alt="image" src="https://user-images.githubusercontent.com/20667188/193298924-0ab9698b-6913-4b63-906a-0618baadf3ff.png">
 
 
