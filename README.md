@@ -32,7 +32,7 @@ Actual data is usually elsewhere from where the Nextflow scripts are, and be abl
 - `$baseDir` usually refers to the same folder as `${workflow.projectDir}` but it can also be used in the config file, where `${workflow.projectDir}` and `${workflow.launchDir}` are not accessible.   
 
 
-### Print - debugger's best friend
+### Print - our best friend for debugging
 The hardest error to debug (assuming one is familiar with bioinformatics tools) is often channel structure TnT
 - To print a channel, use `.view()`. It's especially useful to resolve `WARN: Input tuple does not match input set cardinality declared by process`. (Don't forget to remove `.view()` after debugging) 
 ```
