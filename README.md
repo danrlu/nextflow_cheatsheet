@@ -33,7 +33,7 @@ Actual data is usually elsewhere from where the Nextflow scripts are, and be abl
 
 
 ### Print - debugger's best friend
-The hardest error to debug (assuming one is familiar with bioinformatics tools) is often channels structure TnT
+The hardest error to debug (assuming one is familiar with bioinformatics tools) is often channel structure TnT
 - To print a channel, use `.view()`. It's especially useful to resolve `WARN: Input tuple does not match input set cardinality declared by process`. (Don't forget to remove `.view()` after debugging) 
 ```
   channel_vcf
@@ -41,10 +41,10 @@ The hardest error to debug (assuming one is familiar with bioinformatics tools) 
     .combine(channel_chr)
     .view()
 ```
-- To print from the script section inside the processes, add `echo true`. This is very useful to check whether a channel has passed desired information in correct format to the process.
+- To print from the script section inside the processes, add `debug true`. This is very useful to check whether a channel has passed desired information in correct format to the process.
 ```
   process test {
-    echo true    // this will print the stdout from the script section on Terminal
+    debug true    // this will print the stdout from the script section on Terminal
     input: path(file)
     """
     head $file
@@ -72,6 +72,11 @@ As biologists, we turn every rock.
   - If in a tuple, use `input: tuple path("A.txt"), path("B.txt")`
   - This goes the same for `output`.
 - From [pditommaso](https://github.com/pditommaso): `path(A)` is almost the same as `file(A)`, however the first interprets a value of type string as the input file path (ie the location in the file system where it's stored), the latter interprets a value of type string and materialise it to a temporary files. It's recommended the use of `path` since it's less ambiguous and fits better in most use-cases.
+
+
+### Variable number of items in the channel
+In the process section, one needs to specify `input: val(a), path(b)`, which implicitly needs to know how many values or files are contained in the channel. But we don't always know it ahead of time. For example the number of chromosomes could vary, or input is sometimes paired-end, sometimes single-end, or some previous processes may not generate an output. The workaround is to put them into a tuple and refer to it as `input: tuple path("*")`. 
+<img width="1211" alt="image" src="https://user-images.githubusercontent.com/20667188/193298924-0ab9698b-6913-4b63-906a-0618baadf3ff.png">
 
 
 ### DSL2
