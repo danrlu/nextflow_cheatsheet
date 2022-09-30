@@ -72,7 +72,6 @@ As biologists, we turn every rock.
   - If in a tuple, use `input: tuple path("A.txt"), path("B.txt")`
   - This goes the same for `output`.
 - From [pditommaso](https://github.com/pditommaso): `path(a)` is almost the same as `file(a)`, however the first interprets a value of type string as the input file path (ie the location in the file system where it's stored), the latter interprets a value of type string and materialise it to a temporary files. It's recommended the use of `path` since it's less ambiguous and fits better in most use-cases.
-- Side note that in the `""" (script section) """` (if you're using double quotes `"""`), to retrieve Nextflow varialbes use `$a`, and if there is a bash variable `b` that is created inside the code block, refere to it as `\$b`.
 
 
 ### Variable number of items in the channel; tuple inside a tuple?
