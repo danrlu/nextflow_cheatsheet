@@ -2,6 +2,11 @@
 
 These are notes for myself gathered through using Nextflow, and hopefully useful for others. **Error reports and suggestions welcome!**
 
+### NEW (on 221005):
+
+Q&A page: What do I do if I want to ... ?
+
+
 ### Some resources
 - [DSL2 beginners' guide](https://github.com/chlazaris/Nextflow_training/blob/main/nextflow_cheatsheet.md) by [Harriz Lazaris](https://github.com/chlazaris) for Nextflow.
 
@@ -72,13 +77,6 @@ As biologists, we turn every rock.
   - If in a tuple, use `input: tuple path("A.txt"), path("B.txt")`
   - This goes the same for `output`.
 - From [pditommaso](https://github.com/pditommaso): `path(a)` is almost the same as `file(a)`, however the first interprets a value of type string as the input file path (ie the location in the file system where it's stored), the latter interprets a value of type string and materialise it to a temporary files. It's recommended the use of `path` since it's less ambiguous and fits better in most use-cases.
-
-
-### Variable number of items in the channel; tuple inside a tuple?
-1 solution for both:
-- In the process section, one needs to specify `input: val(a), path(b)`, which implicitly needs to know how many values or files are contained in the channel. But we don't always know this ahead of time. For example the number of chromosomes could vary, or the input is sometimes paired-end, sometimes single-end, or some previous processes may not generate an output. The workaround is to put them into a tuple and refer to it as `input: tuple path("*")`.
-- This also works when there is tuple within a tuple in the channel 
-<img width="1211" alt="image" src="https://user-images.githubusercontent.com/20667188/193298924-0ab9698b-6913-4b63-906a-0618baadf3ff.png">
 
 
 ### DSL2
