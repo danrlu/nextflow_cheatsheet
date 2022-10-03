@@ -3,7 +3,7 @@ What to do if...
 
 ## What to do if the number of items in the input channel is unknown or can vary from time to time
 Each input channel has 2 dimensions: each item (or elements as Nextflow calls it) in a row gets its own parallel execution of the process. 
-![image](https://user-images.githubusercontent.com/20667188/193625668-151afb1e-1248-422f-8670-8802d9abd928.png)
+<img width="494" alt="image" src="https://user-images.githubusercontent.com/20667188/193625668-151afb1e-1248-422f-8670-8802d9abd928.png">
 
 Then within each row, there can be a number of sub-items (not sure the official name) we pass to a process by specifying `input: path(a), path(b)`, which then implicitly requires us to know how many sub-items are there. But we don't always know this ahead of time. For example, if the input is all fastq files in a folder, or the number of chromosomes vary from species to species. The workaround is:
 ```
