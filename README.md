@@ -20,8 +20,7 @@ Q&A page: What do I do if I want to ... ?
 Understanding working directory was the hardest learning piece for me, and it turned out to be key to understand where the files are and how to debug errors b/c often all files and logs you need are in the working directory.  
 - **Each execution of a process happens in its own temporary working directory.** 
 - Specify the location of the parent working directory with `workDir = '/path_to_tmp/'` in nextflow.config, or with `-w` option when running `nextflow main.nf`.
-- Each excecution of a process creates one folder in the working directory. This folder starts off with files only from the input channel (by default in form of symlinks, see the tiny file size in snapshot), so it's fairly isolated from the rest of the file system without duplication of actual data.
-<img width="382" alt="image" src="https://user-images.githubusercontent.com/20667188/193968592-4b0f7465-b913-447d-bb46-3da3e3737ad2.png">
+- Each excecution of a process creates one folder in the working directory. This folder starts off with files only from the input channel by default in form of symlinks, so it's fairly isolated from the rest of the file system without duplication of actual data.
 - As the process runs, this folder will also contain all intermediate files, logs, and output files (unless specifically directed elsewhere), and only those specified in the output channels and `publishDir` will be moved or copied to the `publishDir`. 
   - Anything you want to specify in `publishDir` needs to be in an output channel.
   - Note that with `publishDir "path", mode: 'move'`, the output file will be moved away from the working directory and Nextflow will not be able to use it as input for another process, so only use this option when there is not a following process that uses the output file. 
