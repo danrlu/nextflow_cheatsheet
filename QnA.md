@@ -29,21 +29,24 @@ echo ${bash_variable}
 ```
 
 
-## To weave in R scripts
+## To weave in R markdown
 I'm a big fan of using Rmarkdown to generate a html report to plot the results. There are many ways to get this to work but below is what I usually do:
-- Have R and its packages in the environment. This is a project of its own. tl;dr is it is best is to have a conda environment dedicated for R and pass it to Nextflow. But occassionally a package cannot be installed through conda, then it's good to set up R without conda entirely. If you mix R inside of conda with R outside of conda, sometimes the library path needs manual adjustment and that gets complicated. Read more [here](https://community.rstudio.com/t/why-not-r-via-conda/9438/4) and [here](https://www.biostars.org/p/450316/).
-- The way Rmarkdown work is you write code chunks in a .Rmd file, then knit it and it will by default read in input files in the same folder as the .Rmd file. In the context of Nextflow, there are 2 things to keep track of:
-    + Where is the .Rmd file. Remember when we do `Channel.fromPath("/path/my.Rmd")`, Nextflow by default puts a symlink into the working directory (note the size below), and when knitting, the file that the symlink points to get knitted in its original folder, which is `/path/my.Rmd` instead of the working directory. 
+- Have R and its packages in the environment. This is a project of its own. tl;dr is it is best is to have a conda environment dedicated for R and pass it to Nextflow. But occassionally a package cannot be installed through conda, then it's good to set up R without conda entirely. If you mix R inside of conda with R outside of conda, sometimes packages cannot be found and that gets complicated. Read more [here](https://community.rstudio.com/t/why-not-r-via-conda/9438/4) and [here](https://www.biostars.org/p/450316/).
+- The way Rmarkdown work is you write code chunks in a .Rmd file, knit it and it will by default read in input files in the same folder as the .Rmd file and generate a report. In the context of Nextflow, there are 3 things to keep track of:
+    + Where is the .Rmd file. Remember when we create an input with `Channel.fromPath("/path/my.Rmd")`, Nextflow by default puts a symlink into the working directory (note the file size below), and when knitting, the file that the symlink points to get knitted in its original folder, which is `/path/my.Rmd` instead of the working directory. 
     + <img width="445" alt="image" src="https://user-images.githubusercontent.com/20667188/193975974-2ce12deb-21db-45c2-84b1-69e6a94b75f3.png">
-    + The input files or their symlinks need to be in the same folder as the .Rmd file. So the easiest way:
+    + Trigger the process that runs the R markdown when all input files the .Rmd needs are generated. This means to put all input files into a channel, and make that channel the input for this process.
+    + The input files (or their symlink) that the .Rmd file needs need to be in the same folder as the .Rmd file. This will naturally happen if the previous point is satisfied. 
+
+An example:
 ```
 process generate_html {
 
     conda "/Users/dlu/miniconda3/envs/r"
-    publishDir "${params.out}", mode: 'copy', pattern: '*'
+    publishDir "${params.output_folder}", mode: 'copy', pattern: '*' // publish everything in the output channel
     
     input:
-        tuple path(a), path(rmd_template)
+        tuple path(a), path(rmd_template) // $a would contain data that .Rmd reads in
 
     output:
         tuple path("*.Rmd"), path("*.html")
@@ -51,41 +54,43 @@ process generate_html {
     """
     # create an actual copy of the .Rmd code in the working directory
     # note ${rmd_template} here is a symlink
-    cat "${rmd_template}" > plot.Rmd 
+    # cp -H ${rmd_template} > plot.Rmd works too
+    cat ${rmd_template} > plot.Rmd 
     
     # OR if needed, update code in the ${rmd_template} 
     # here FQ_HOLDER is meant to be replaced/updated for each run using params.fastqa_folder
-    # cat "${rmd_template}" | sed "s/FQ_HOLDER/${params.fastq_folder}/g" > plot.Rmd 
+    # cat ${rmd_template} | sed "s/FQ_HOLDER/${params.fastq_folder}/g" > plot.Rmd 
 
     # knit the .Rmd file. 
-    # this will look for input files in the current working directory. in this example, the input file is passed to the process via path(a)
+    # this will look for input files in the current working directory. in this example, the input file is copied into the working directory via input: path(a)
     Rscript -e "rmarkdown::render('plot.Rmd')"
     """
 }
 ```
-- Another approach is to knit it in the output directory if all inputs for the .Rmd are already written out there. The benefit here is I can modify the .Rmd and re-knit it easily after Nextflow runs.
+
+- Another approach is to knit it in the output directory if all inputs for the .Rmd are already written out there. The benefit is I can easily modify the .Rmd and re-knit it after the Nextflow run, but this only works if this is the last and final process of the workflow.
 ```
 process generate_html {
 
     conda "/Users/dlu/miniconda3/envs/r"
  
     input:
-        tuple path(a), path(rmd_template) // Even though path(a) is not used by the .Rmd in the code block below, it serves as the signal when this process can start to run. 
+        tuple path(a), path(rmd_template) // Even though $a is no longer used by the .Rmd in the code block below, it serves as the signal when this process can start to run. 
 
-    // there will be nothing to output or publish since all files will already be in the desired output directory    
+    // there will be nothing to output or publish since nothing is generated in the working directory, where Nextflow will search for output files.    
 
     """
-    # create an actual copy of the .Rmd code in the working directory
+    # create an actual copy of the .Rmd code in the output directory
     # note ${rmd_template} here is a symlink
-    cat "${rmd_template}" > ${params.out}/plot.Rmd 
+    cat ${rmd_template} > ${params.output_folder}/plot.Rmd 
     
-    # here we're leaving the working directory  
-    # all output files will no longer be in the working directory and can no longer be found by Nextflow to put into output channels
-    cd ${params.out} 
+    # navigate to the folder 
+    cd ${params.output_folder}
     
     # knit the .Rmd file
-    # the resulting .html file will be in the same folder, aka ${params.out}
+    # the resulting .html file will be in the same folder, aka ${params.output_folder}
     Rscript -e "rmarkdown::render('plot.Rmd')"
     """
 }
 ```
+
