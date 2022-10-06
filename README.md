@@ -120,7 +120,7 @@ Beautiful graphics especially useful for performance monitoring.
     }
 ```
 
-- **(b)** For parameters that need to contain a value, Nextflow recommends to set a default and let users to overwrite it as needed. However, if you want to require it to be specified by the user:
+- **(b)** For parameters that need to contain a value, such as `--reference /path/ref.fa`, Nextflow recommends to set a default and let users to overwrite it as needed. However, if you want to require it to be specified by the user:
 ```
     params.reference = null   // no quotes. this line is optional, since without initialising the parameter it will default to null. 
     if (params.reference == null) error "Please specify a reference genome with --reference"
