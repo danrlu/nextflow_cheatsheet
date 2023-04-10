@@ -44,7 +44,7 @@ The hardest error to debug (assuming one is familiar with bioinformatics tools) 
 - To print from the script section inside the processes, add `echo true`. This is very useful to check whether a channel has passed desired information in correct format to the process.
 ```
   process test {
-    echo true    // this will print the stdout from the script section on Terminal
+    debug true    // this will print the stdout from the script section on Terminal
     input: path(file)
     """
     head $file
