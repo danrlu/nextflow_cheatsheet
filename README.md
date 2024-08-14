@@ -19,15 +19,15 @@ Understanding working directory was the hardest learning piece for me, and it tu
 - As the process runs, this folder will also contain all intermediate files, logs, and output files (unless specifically directed elsewhere), and only those specified in the output channels and `publishDir` will be moved or copied to the `publishDir`. 
   - Anything you want to specify in `publishDir` needs to be in an output channel.
   - Note that with `publishDir "path", mode: 'move'`, the output file will be moved away from the working directory and Nextflow will not be able to use it as input for another process, so only use this option when there is not a following process that uses the output file. 
-  - Be mindful that if the `""" (script section) """` involves changing directory, such as `cd` or `rmarkdown::render( knit_root_dir = "folder/" )`, Nextflow will still only search the working directory for output files b/c the execution is in the working directory. tl;dr is this gets tricky, so try let Nextflow handle folder navigation as much as possible. 
-- To find the location of the working direcotry: it is the folder named like `/path_to_tmp/4d9c3b333734a5b63d66f0bc0cfcdc` that Nextflow points you to when there is an error in execution. This folder usually already contains all files needed to reproduce the error, and Nextflow error message gives clear direction how reproduce the error. One can also find the folder path in the `.nextflow.log` or in the `report.html`. 
-- Run `nextflow clean -f` in the excecution folder to clean up the working directories, which often gets large unnoticed.
+  - Be mindful that if the `""" (script section) """` involves changing directory, such as `cd` or `rmarkdown::render( knit_root_dir = "folder/" )`, Nextflow will still only search the working directory for output files b/c the execution is in the working directory. [tl;dr is this gets tricky, so try let Nextflow handle folder navigation as much as possible. ] -> ? ( not clear): [This is tricky, so let Nextflow handle folder navigation as much as possible].
+- To find the location of the working directory: it is the folder named like `/path_to_tmp/4d9c3b333734a5b63d66f0bc0cfcdc` that Nextflow points you to, when there is an error in execution. This folder usually already contains all files needed to reproduce the error, and Nextflow error message gives clear direction how to reproduce the error. One can also find the folder path in the `.nextflow.log` or in the `report.html`. 
+- Run `nextflow clean -f` in the execution folder to clean up the working directories, which often gets large unnoticed.
 
 
 ### Where am I?
-Actual data is usually elsewhere from where the Nextflow scripts are, and be able to specify relative file path makes the code more portable. The options below are much more reiable than `$PWD` or `$pwd`.
+Actual data is usually elsewhere from where the Nextflow scripts are, and to be able to specify relative file path makes the code more portable. The options below are much more reliable than `$PWD` or `$pwd`.
 - In Nextflow scripts (.nf files), one can use 
-  - `${workflow.projectDir}` to refer where the project locates (usually the folder of `main.nf`). For example: `publishDir "${workflow.projectDir}/output", mode: 'copy'` or `Rscript ${workflow.projectDir}/bin/task.R`.
+  - `${workflow.projectDir}` to refer to where the project locates (usually the folder of `main.nf`). For example: `publishDir "${workflow.projectDir}/output", mode: 'copy'` or `Rscript ${workflow.projectDir}/bin/task.R`.
   - `${workflow.launchDir}` to refer to where the script is called from, aka the current folder in Terminal when running `nextflow main.nf`.
 - `$baseDir` usually refers to the same folder as `${workflow.projectDir}` but it can also be used in the config file, where `${workflow.projectDir}` and `${workflow.launchDir}` are not accessible.   
 
@@ -71,7 +71,7 @@ As biologists, we turn every rock.
   - If not in a tuple, use `input: path "A.txt"` 
   - If in a tuple, use `input: tuple path("A.txt"), path("B.txt")`
   - This goes the same for `output`.
-- From [pditommaso](https://github.com/pditommaso): `path(A)` is almost the same as `file(A)`, however the first interprets a value of type string as the input file path (ie the location in the file system where it's stored), the latter interprets a value of type string and materialise it to a temporary files. It's recommended the use of `path` since it's less ambiguous and fits better in most use-cases.
+- From [pditommaso](https://github.com/pditommaso): `path(A)` is almost the same as `file(A)`, however the first interprets a value of type string as the input file path (ie the location in the file system where it's stored), the latter interprets a value of type string and materialises it to a temporary files. It's recommended to use `path` since it's less ambiguous and fits better in most use-cases.
 
 
 ### DSL2
@@ -80,7 +80,7 @@ This is a little outdated. Is anyone still DSL1-ing??
 - In DSL1, each queue channel can only be used once. 
 - In DSL2, a channel can be fed into multiple processes
 - In DSL2, each process can only be called once. The solution is either `.concat()` the input channels so they run as parallel processes, or put the process in a module and import multiple times from the module. (One may be able to call a process in different workflows, haven't tested yet).
-- DSL2 also enforces that all inputs needs to be combined into 1 channel before it goes into a process. See the [cheatsheet](https://github.com/danrlu/Nextflow_cheatsheet/blob/main/nextflow_cheatsheet.pdf) for useful operators. 
+- DSL2 also enforces all inputs to be combined into 1 channel before it goes into a process. See the [cheatsheet](https://github.com/danrlu/Nextflow_cheatsheet/blob/main/nextflow_cheatsheet.pdf) for useful operators. 
 - [Simple steps to convert from original syntax to DSL2](https://github.com/danrlu/Nextflow_cheatsheet/blob/main/nextflow_convert_DSL2.pdf)
 - [Deprecated operators](https://www.nextflow.io/docs/latest/dsl2.html#dsl2-migration-notes).
 
@@ -95,8 +95,8 @@ Beautiful graphics especially useful for performance monitoring.
 - How to set them up in the [nextflow.config](https://github.com/AndersenLab/wi-gatk/blob/master/nextflow.config) so they are automatically generated for each run. Credit [danielecook](https://github.com/danielecook) 
 
 
-### Require users to sepcify a parameter value
-- There are 2 types of paramters: (a) one with no actual value (b) one with actual values. 
+### Require users to specify a parameter value
+- There are 2 types of parameters: (a) one with no actual value (b) one with actual values. 
 - **(a)** If a parameter is specified but no value is given, it is implicitly considered `true`. For example, one can use this to run debug mode `nextflow main.nf --debug`
 ```
     if (params.debug) {
@@ -121,7 +121,7 @@ Beautiful graphics especially useful for performance monitoring.
     if (params.reference == null) error "Please specify a reference genome with --reference"
 ```  
 
-- Below works as long as the user always append a value: `--reference=something`. It will not print the error message with: `nextflow main.nf --reference` (without specifying a value) because this will set `params.reference` to `true` (see point **(a)**) and `!params.reference` will be `false`. 
+- Below works as long as the user appends a value: `--reference=something`. It will not print the error message with: `nextflow main.nf --reference` (without specifying a value) because this will set `params.reference` to `true` (see point **(a)**) and `!params.reference` will be `false`. 
 ```
     if (!params.reference) error "Please specify a reference genome with --reference"
 ```
